@@ -15,6 +15,7 @@ public class AVVideoDownloader : MonoBehaviour
     public TextMeshProUGUI PathText;
     public Slider progressSlider; // Reference to a UI slider for progress display
 
+    public TextMeshProUGUI slidervalue;
     public AVVideoPlayer aVVideoPlayer;
 
     public GameObject sliderandText;
@@ -50,6 +51,7 @@ public class AVVideoDownloader : MonoBehaviour
                 if (progressSlider != null)
                 {
                     progressSlider.value = www.downloadProgress;
+                    slidervalue.text= progressSlider.value.ToString();
                 }
                 yield return null;
             }
