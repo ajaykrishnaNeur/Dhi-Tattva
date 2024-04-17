@@ -15,7 +15,9 @@ public class AVVideoDownloader : MonoBehaviour
     public TextMeshProUGUI PathText;
     public Slider progressSlider; // Reference to a UI slider for progress display
 
-    public GameObject PlayButton;
+    public AVVideoPlayer aVVideoPlayer;
+
+    public GameObject sliderandText;
     void Start()
     {
         string savePath = Path.Combine(Application.persistentDataPath, saveFileName);
@@ -25,7 +27,8 @@ public class AVVideoDownloader : MonoBehaviour
         {
             Debug.Log("Video already exists locally at: " + savePath);
             PathText.text = savePath;
-            GetComponent<AVVideoPlayer>().PlayVideo();
+            //sliderandText.SetActive(false);
+            aVVideoPlayer.GetComponent<AVVideoPlayer>().PlayVideo();
         }
         else
         {
@@ -56,8 +59,8 @@ public class AVVideoDownloader : MonoBehaviour
                 string savePath = Path.Combine(Application.persistentDataPath, saveFileName);
                 Debug.Log("Video downloaded successfully to: " + savePath);
                 PathText.text = savePath;
-
-                GetComponent<AVVideoPlayer>().PlayVideo();
+                //sliderandText.SetActive(false);
+                aVVideoPlayer.GetComponent<AVVideoPlayer>().PlayVideo();
             }
             else
             {
