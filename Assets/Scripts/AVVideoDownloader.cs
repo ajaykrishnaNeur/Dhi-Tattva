@@ -8,10 +8,10 @@ using UnityEngine.Networking;
 
 public class AVVideoDownloader : MonoBehaviour
 {
-    public string videoURL = "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-    public string saveFileName = "downloaded_video.mp4"; // Adjust the file name and extension as needed
+    public string videoURL;
+    public string saveFileName; // Adjust the file name and extension as needed
 
-    public string savePath;
+    private string savePath;
     public TextMeshProUGUI PathText;
     public Slider progressSlider; // Reference to a UI slider for progress display
 
