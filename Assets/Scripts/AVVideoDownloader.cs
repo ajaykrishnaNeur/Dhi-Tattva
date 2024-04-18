@@ -21,7 +21,7 @@ public class AVVideoDownloader : MonoBehaviour
     public GameObject sliderandText;
     void Start()
     {
-        string savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        savePath = Path.Combine(Application.persistentDataPath, saveFileName);
 
         // Check if the video file already exists locally
         if (File.Exists(savePath))
