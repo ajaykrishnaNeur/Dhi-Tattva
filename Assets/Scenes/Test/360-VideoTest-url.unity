@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2755,8 +2755,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e0a3e1ed62a36438973d6a2ee5d385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoFileName: 3.mp4
   mediaPlayer: {fileID: 1516615348}
+  videoDownloader: {fileID: 2102342487}
 --- !u!1001 &1525697247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3668,13 +3668,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d624553b1712a4493cce8d1e2e05c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoURL: https://isckon-file.s3.ap-south-1.amazonaws.com/videos/Ganga+Aarti+360.mp4.mp4
-  saveFileName: 3.mp4
+  videoURL: https://isckon-file.s3.ap-south-1.amazonaws.com/videos/Govardhan+360+v1.mp4.mp4
   PathText: {fileID: 1729620297}
   progressSlider: {fileID: 1264462894}
   slidervalue: {fileID: 1570760630}
   aVVideoPlayer: {fileID: 1516615350}
   sliderandText: {fileID: 1264462892}
+  videoUrlName: 
 --- !u!4 &2102342488
 Transform:
   m_ObjectHideFlags: 0

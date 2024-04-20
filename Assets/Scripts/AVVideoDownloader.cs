@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 public class AVVideoDownloader : MonoBehaviour
 {
     public string videoURL;
-    public string saveFileName; // Adjust the file name and extension as needed
+    //public string saveFileName; // Adjust the file name and extension as needed
 
     private string savePath;
     public TextMeshProUGUI PathText;
@@ -19,9 +19,21 @@ public class AVVideoDownloader : MonoBehaviour
     public AVVideoPlayer aVVideoPlayer;
 
     public GameObject sliderandText;
+
+
+    //save video into url video name
+    public string videoUrlName;
     void Start()
     {
-        savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        int index = videoURL.IndexOf("videos/");
+
+        // If "videos" is found, extract the substring after it
+        if (index != -1)
+        {
+            videoUrlName = videoURL.Substring(index + "videos/".Length);
+            Debug.Log(videoUrlName);
+        }
+        savePath = Path.Combine(Application.persistentDataPath, videoUrlName);
 
         // Check if the video file already exists locally
         if (File.Exists(savePath))
@@ -42,7 +54,7 @@ public class AVVideoDownloader : MonoBehaviour
     {
         using (UnityWebRequest www = UnityWebRequest.Get(videoURL))
         {
-            www.downloadHandler = new DownloadHandlerFile(Path.Combine(Application.persistentDataPath, saveFileName));
+            www.downloadHandler = new DownloadHandlerFile(Path.Combine(Application.persistentDataPath, videoUrlName));
             www.SendWebRequest();
 
             while (!www.isDone)
@@ -58,7 +70,7 @@ public class AVVideoDownloader : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                string savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+                string savePath = Path.Combine(Application.persistentDataPath, videoUrlName);
                 Debug.Log("Video downloaded successfully to: " + savePath);
                 PathText.text = savePath;
                 //sliderandText.SetActive(false);

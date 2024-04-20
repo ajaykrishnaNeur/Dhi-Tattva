@@ -7,12 +7,12 @@ using RenderHeads.Media.AVProVideo;
 
 public class AVVideoPlayer : MonoBehaviour
 {
-    public string videoFileName;
+    //public string videoFileName;
     public MediaPlayer mediaPlayer;
-
+    public AVVideoDownloader videoDownloader;
     public void PlayVideo()
     {
-        string videoPath = Path.Combine(Application.persistentDataPath, videoFileName);
+        string videoPath = Path.Combine(Application.persistentDataPath, videoDownloader.videoUrlName);
 
         if (!mediaPlayer)
         {
