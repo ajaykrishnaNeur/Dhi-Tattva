@@ -9,11 +9,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System;
 using System.Linq;
+using System.Reflection;
 
 public class AVVideoDownloader : MonoBehaviour
 {
-    public string videoURL;
-    public string saveFileName; // Adjust the file name and extension as needed
+    public string videoURL = "https://isckon-file.s3.ap-south-1.amazonaws.com/videos/Ganga+Aarti+360.mp4.mp4";
+    //public string saveFileName; // Adjust the file name and extension as needed
 
     private string savePath;
     public TextMeshProUGUI PathText;
@@ -46,10 +47,14 @@ public class AVVideoDownloader : MonoBehaviour
 
         if (index != -1)
         {
-            videoUrlName = videoURL.Substring(index + "videos/".Length);
-            Debug.Log(videoUrlName);
+            int extensionIndex = videoURL.LastIndexOf(".mp4.mp4"); // Find the last occurrence of ".mp4"
+            if (extensionIndex != -1)
+            {
+                videoUrlName = videoURL.Substring(index + "videos/".Length, extensionIndex - (index + "videos/".Length));
+                Debug.Log(videoUrlName);
+            }
         }
-        savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+        savePath = Path.Combine(Application.persistentDataPath, videoUrlName);
 
         if (File.Exists(savePath))
         {
@@ -67,7 +72,7 @@ public class AVVideoDownloader : MonoBehaviour
     {
         using (UnityWebRequest www = UnityWebRequest.Get(videoURL))
         {
-            www.downloadHandler = new DownloadHandlerFile(Path.Combine(Application.persistentDataPath, saveFileName));
+            www.downloadHandler = new DownloadHandlerFile(Path.Combine(Application.persistentDataPath, videoUrlName));
             www.SendWebRequest();
 
             while (!www.isDone)
@@ -82,7 +87,7 @@ public class AVVideoDownloader : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                string savePath = Path.Combine(Application.persistentDataPath, saveFileName);
+                string savePath = Path.Combine(Application.persistentDataPath, videoUrlName);
 
                 // Encrypt the downloaded video file
                 EncryptVideo(savePath);
@@ -139,27 +144,5 @@ public class AVVideoDownloader : MonoBehaviour
         }
     }
 
-
-
-
-    // Encrypts bytes using AES encryption with a given key
-    private byte[] EncryptBytes(byte[] bytesToEncrypt, byte[] key)
-    {
-        using (Aes aes = Aes.Create())
-        {
-            aes.Key = key;
-            aes.IV = new byte[aes.BlockSize / 8]; // Use all zeros IV for simplicity (not secure for production)
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                {
-                    cryptoStream.Write(bytesToEncrypt, 0, bytesToEncrypt.Length);
-                    cryptoStream.FlushFinalBlock();
-                    return memoryStream.ToArray();
-                }
-            }
-        }
-    }
 
 }

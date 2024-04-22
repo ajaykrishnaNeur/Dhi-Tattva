@@ -10,12 +10,11 @@ using System;
 
 public class AVVideoPlayer : MonoBehaviour
 {
-    //public string videoFileName;
     public MediaPlayer mediaPlayer;
     public AVVideoDownloader videoDownloader;
     public void PlayVideo()
     {
-        string videoPath = Path.Combine(Application.persistentDataPath, videoDownloader.saveFileName);
+        string videoPath = Path.Combine(Application.persistentDataPath, videoDownloader.videoUrlName);
 
         if (!mediaPlayer)
         {
