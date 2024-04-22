@@ -3668,13 +3668,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d624553b1712a4493cce8d1e2e05c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoURL: https://isckon-file.s3.ap-south-1.amazonaws.com/videos/Govardhan+360+v1.mp4.mp4
+  videoURL: https://isckon-file.s3.ap-south-1.amazonaws.com/videos/Ganga+Aarti+360.mp4.mp4
+  saveFileName: videoo3
   PathText: {fileID: 1729620297}
   progressSlider: {fileID: 1264462894}
   slidervalue: {fileID: 1570760630}
   aVVideoPlayer: {fileID: 1516615350}
   sliderandText: {fileID: 1264462892}
   videoUrlName: 
+  encryptionKey: yourEncryptionKey
 --- !u!4 &2102342488
 Transform:
   m_ObjectHideFlags: 0
