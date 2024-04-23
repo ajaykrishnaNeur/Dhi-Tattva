@@ -63,7 +63,7 @@ public class SocketIOManager : MonoBehaviour
     }
 
   
-    IEnumerator CheckConnectionTimeout(float timeoutSeconds = 5f)
+    IEnumerator CheckConnectionTimeout(float timeoutSeconds = 15f)
     {
         yield return new WaitForSeconds(timeoutSeconds);
 
