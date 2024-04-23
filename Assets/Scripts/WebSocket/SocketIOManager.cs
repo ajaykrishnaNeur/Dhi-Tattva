@@ -4,23 +4,12 @@ using UnityEngine;
 using SocketIOClient;
 using System;
 using TMPro;
+using SimpleJSON;
 
 public class SocketIOManager : MonoBehaviour
 {
     private SocketIOUnity socket;
     public string serverUrl; // Replace with your server's address
-    [Serializable]
-    public class DeviceStatus
-    {
-        public string deviceId;
-        public bool isOnline;
-    }
-    public class SynchDevice
-    {
-        public string deviceId;
-        public bool isCompleted;
-    }
-   // public TextMeshProUGUI textMeshProUGUI;
 
     void Start()
     {
@@ -65,13 +54,11 @@ public class SocketIOManager : MonoBehaviour
         };
 
         // Connect to the server
-
-        // Connect to the server
         socket.Connect();
         StartCoroutine(CheckConnectionTimeout());
-      //  StartCoroutine(CallAfter());
-       
-        Debug.Log("deviceId is" + SystemInfo.deviceUniqueIdentifier);
+        //  StartCoroutine(CallAfter());
+        ReciveDeviceDetails();
+        //Debug.Log("deviceId is" + SystemInfo.deviceUniqueIdentifier);
 
     }
 
@@ -89,11 +76,11 @@ public class SocketIOManager : MonoBehaviour
     // Example of sending a message to the server when the space key is pressed
     void Update()
     {
-        ActiveDeviceStatus(true);
+       
         
 
     }
-    public void ActiveDeviceStatus(bool value)
+  /*  public void ActiveDeviceStatus(bool value)
     {
 
         DeviceStatus status = new DeviceStatus
@@ -103,24 +90,32 @@ public class SocketIOManager : MonoBehaviour
             isOnline = value
         };
 
-        socket.Emit("activeDevice", JsonUtility.ToJson(status)); //send as json
+        socket.Emit("commandTracker", JsonUtility.ToJson(status)); //send as json
                                                                  //socket.Emit("activeDevice", status);// send as object
 
-    }
-    public void SynDevice()
+    }*/
+ 
+    public void ReciveDeviceDetails()
     {
-        SynchDevice synchDevice = new SynchDevice()
-        {
-            deviceId = SystemInfo.deviceUniqueIdentifier,
-            isCompleted = true
-        };
 
-        socket.Emit("syncDevice", JsonUtility.ToJson(synchDevice));
-        ActiveDeviceStatus(true);
-    }
-    public void SendDeviceID()
-    {
-        socket.Emit("activeDevice", SystemInfo.deviceUniqueIdentifier);
+        socket.On("commandTracker", (response) =>
+        {
+            // Extract the JSON string from the array
+            string jsonString = response.GetValue<string>(0);
+
+            // Parse the JSON string
+            var jsonObject = JSON.Parse(jsonString);
+
+            // Access individual properties
+            bool play = jsonObject["play"].AsBool;
+            bool restart = jsonObject["restart"].AsBool;
+            string videoId = jsonObject["video_id"].Value;
+            string packageId = jsonObject["package_id"].Value;
+
+            // Now you can use these values as needed
+            Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
+        });
+
     }
     void OnDestroy()
     {

@@ -13,7 +13,7 @@ public class APIManagerTest : MonoBehaviour
     private string Response;
     public string message, statuss;
 
-    public DataHandler dataHandler;
+    public DataHandlerTest dataHandler;
     public class Login
     {
         public string login;
