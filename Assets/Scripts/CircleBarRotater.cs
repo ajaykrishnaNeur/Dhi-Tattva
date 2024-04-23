@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class CircleBarRotater : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] private float rotationSpeed = 130f; // Adjust this to control the rotation speed
+    [SerializeField] private float rotationSpeed = 130f;
 
-    // Update is called once per frame
     void Update()
     {
-        // Rotate the sprite around the Z-axis
         transform.Rotate(-Vector3.forward, rotationSpeed * Time.deltaTime);
     }
 }

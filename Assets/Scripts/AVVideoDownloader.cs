@@ -27,8 +27,8 @@ public class AVVideoDownloader : MonoBehaviour
 
     //save video into url video name
     public string videoUrlName;
-    public string encryptionKey = "yourEncryptionKey";
-    private const int KeySize = 256; // Key size in bits
+    public string encryptionKey = "yourEncryptionKey"; // Change this to your actual encryption key
+    private const int KeySize = 256;
 
     private byte[] DeriveKey(string password)
     {
@@ -36,19 +36,12 @@ public class AVVideoDownloader : MonoBehaviour
         {
             byte[] keyBytes = Encoding.UTF8.GetBytes(password);
             byte[] hash = sha256.ComputeHash(keyBytes);
-            return hash.Take(KeySize / 8).ToArray(); // Take the first 256 bits (32 bytes) of the hash
+            return hash.Take(KeySize / 8).ToArray();
         }
     }
 
-    void Start()
+    private void Start()
     {
-        int index = videoURL.IndexOf("videos/");
-
-        if (index != -1)
-        {
-            videoUrlName = videoURL.Substring(index + "videos/".Length);
-            Debug.Log(videoUrlName);
-        }
         savePath = Path.Combine(Application.persistentDataPath, saveFileName);
 
         if (File.Exists(savePath))
@@ -63,7 +56,7 @@ public class AVVideoDownloader : MonoBehaviour
         }
     }
 
-    IEnumerator DownloadVideoCoroutine()
+    private IEnumerator DownloadVideoCoroutine()
     {
         using (UnityWebRequest www = UnityWebRequest.Get(videoURL))
         {
@@ -75,20 +68,18 @@ public class AVVideoDownloader : MonoBehaviour
                 if (progressSlider != null)
                 {
                     progressSlider.value = www.downloadProgress;
-                    slidervalue.text = progressSlider.value.ToString();
                 }
                 yield return null;
             }
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                string savePath = Path.Combine(Application.persistentDataPath, saveFileName);
-
-                // Encrypt the downloaded video file
-                EncryptVideo(savePath);
-
                 Debug.Log("Video downloaded successfully to: " + savePath);
-                PathText.text = savePath;
+
+                string encryptedFilePath = EncryptVideo(savePath);
+                Debug.Log("Video encrypted successfully: " + encryptedFilePath);
+
+                PathText.text = encryptedFilePath;
                 aVVideoPlayer.PlayVideo();
             }
             else
@@ -98,68 +89,41 @@ public class AVVideoDownloader : MonoBehaviour
         }
     }
 
-    // Encrypts the downloaded video file
-    private void EncryptVideo(string filePath)
+    private string EncryptVideo(string filePath)
     {
-        const int bufferSize = 1024 * 1024; // 1 MB buffer size (adjust as needed)
+        const int bufferSize = 1024 * 1024; // 1 MB buffer size
 
         try
         {
-            byte[] key = DeriveKey(encryptionKey); // Derive the key from a password
-
+            byte[] key = DeriveKey(encryptionKey);
             string encryptedFilePath = filePath + ".enc";
 
             using (FileStream inputStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (FileStream outputStream = new FileStream(encryptedFilePath, FileMode.Create, FileAccess.Write))
+            using (Aes aes = Aes.Create())
             {
-                using (FileStream outputStream = new FileStream(encryptedFilePath, FileMode.Create, FileAccess.Write))
+                aes.Key = key;
+                aes.IV = new byte[aes.BlockSize / 8];
+
+                using (CryptoStream cryptoStream = new CryptoStream(outputStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
                 {
                     byte[] buffer = new byte[bufferSize];
                     int bytesRead;
-                    using (Aes aes = Aes.Create())
-                    {
-                        aes.Key = key;
-                        aes.IV = new byte[aes.BlockSize / 8]; // Use all zeros IV for simplicity (not secure for production)
 
-                        using (CryptoStream cryptoStream = new CryptoStream(outputStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                        {
-                            while ((bytesRead = inputStream.Read(buffer, 0, bufferSize)) > 0)
-                            {
-                                cryptoStream.Write(buffer, 0, bytesRead);
-                            }
-                        }
+                    while ((bytesRead = inputStream.Read(buffer, 0, bufferSize)) > 0)
+                    {
+                        cryptoStream.Write(buffer, 0, bytesRead);
                     }
                 }
             }
 
-            Debug.Log("Video encrypted successfully: " + encryptedFilePath);
+            return encryptedFilePath;
         }
         catch (Exception ex)
         {
             Debug.LogError("Encryption error: " + ex.Message);
+            return string.Empty;
         }
     }
-
-
-
-
-    // Encrypts bytes using AES encryption with a given key
-    private byte[] EncryptBytes(byte[] bytesToEncrypt, byte[] key)
-    {
-        using (Aes aes = Aes.Create())
-        {
-            aes.Key = key;
-            aes.IV = new byte[aes.BlockSize / 8]; // Use all zeros IV for simplicity (not secure for production)
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                {
-                    cryptoStream.Write(bytesToEncrypt, 0, bytesToEncrypt.Length);
-                    cryptoStream.FlushFinalBlock();
-                    return memoryStream.ToArray();
-                }
-            }
-        }
-    }
-
 }
+

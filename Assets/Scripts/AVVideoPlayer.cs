@@ -27,7 +27,7 @@ public class AVVideoPlayer : MonoBehaviour
 
         if (isEncrypted)
         {
-            DecryptVideo(videoPath);
+            DecryptVideo(videoPath, videoDownloader.encryptionKey);
         }
 
         bool isOpening = mediaPlayer.OpenMedia(new MediaPath(videoPath, MediaPathType.AbsolutePathOrURL), autoPlay: true);
@@ -40,15 +40,15 @@ public class AVVideoPlayer : MonoBehaviour
 
     private bool IsVideoEncrypted(string filePath)
     {
-        return Path.GetExtension(filePath).Equals(".enc", System.StringComparison.OrdinalIgnoreCase);
+        return File.Exists(filePath + ".enc");
     }
 
-    private void DecryptVideo(string filePath)
+    private void DecryptVideo(string filePath, string key)
     {
         try
         {
-            byte[] encryptedBytes = File.ReadAllBytes(filePath);
-            byte[] decryptedBytes = DecryptBytes(encryptedBytes, videoDownloader.encryptionKey);
+            byte[] encryptedBytes = File.ReadAllBytes(filePath + ".enc");
+            byte[] decryptedBytes = DecryptBytes(encryptedBytes, key);
             File.WriteAllBytes(filePath, decryptedBytes);
             Debug.Log("Video decrypted successfully: " + filePath);
         }
@@ -76,6 +76,7 @@ public class AVVideoPlayer : MonoBehaviour
             }
         }
     }
+
 }
 
 
