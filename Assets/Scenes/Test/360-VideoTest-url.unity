@@ -2550,14 +2550,14 @@ MonoBehaviour:
   _mediaSource: 1
   _mediaReference: {fileID: 0}
   _mediaPath:
-    _pathType: 4
+    _pathType: 0
     _path: 
   _fallbackMediaHints:
     transparency: 0
     alphaPacking: 0
     stereoPacking: 0
   _autoOpen: 0
-  _autoPlayOnStart: 0
+  _autoPlayOnStart: 1
   _loop: 1
   _audioVolume: 1
   _audioBalance: 0

@@ -7,15 +7,18 @@ using RenderHeads.Media.AVProVideo;
 using System.Security.Cryptography;
 using System.Text;
 using System;
+using System.Linq;
 
 public class AVVideoPlayer : MonoBehaviour
 {
     //public string videoFileName;
     public MediaPlayer mediaPlayer;
     public AVVideoDownloader videoDownloader;
-    public void PlayVideo()
+    private string encryptionKey = "yourEncryptionKey"; // Change this to your actual encryption key
+
+    public void PlayVideo(string encryptedFilePath)
     {
-        string videoPath = Path.Combine(Application.persistentDataPath, videoDownloader.saveFileName);
+        string decryptedPath = DecryptVideo(encryptedFilePath);
 
         if (!mediaPlayer)
         {
@@ -23,60 +26,57 @@ public class AVVideoPlayer : MonoBehaviour
             return;
         }
 
-        bool isEncrypted = IsVideoEncrypted(videoPath);
-
-        if (isEncrypted)
+        if (decryptedPath != null)
         {
-            DecryptVideo(videoPath, videoDownloader.encryptionKey);
+            mediaPlayer.OpenMedia(new MediaPath(encryptedFilePath, MediaPathType.AbsolutePathOrURL), autoPlay: true);
         }
-
-        bool isOpening = mediaPlayer.OpenMedia(new MediaPath(videoPath, MediaPathType.AbsolutePathOrURL), autoPlay: true);
-
-        if (!isOpening)
+        else
         {
-            Debug.LogError("Failed to open video: " + videoPath);
+            Debug.LogError("Failed to decrypt video.");
         }
     }
 
-    private bool IsVideoEncrypted(string filePath)
-    {
-        return File.Exists(filePath + ".enc");
-    }
-
-    private void DecryptVideo(string filePath, string key)
+    private string DecryptVideo(string filePath)
     {
         try
         {
-            byte[] encryptedBytes = File.ReadAllBytes(filePath + ".enc");
-            byte[] decryptedBytes = DecryptBytes(encryptedBytes, key);
-            File.WriteAllBytes(filePath, decryptedBytes);
-            Debug.Log("Video decrypted successfully: " + filePath);
+            byte[] key = DeriveKey(encryptionKey);
+            string decryptedFilePath = Path.Combine(Application.persistentDataPath, "decrypted_video.mp4");
+
+            using (FileStream inputStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (FileStream outputStream = new FileStream(decryptedFilePath, FileMode.Create, FileAccess.Write))
+            using (Aes aes = Aes.Create())
+            {
+                // Generate a random initialization vector (IV)
+                aes.IV = new byte[aes.BlockSize / 8];
+                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                rng.GetBytes(aes.IV);
+
+                using (CryptoStream cryptoStream = new CryptoStream(inputStream, aes.CreateDecryptor(key, aes.IV), CryptoStreamMode.Read))
+                {
+                    cryptoStream.CopyTo(outputStream);
+                }
+            }
+
+            return decryptedFilePath;
         }
         catch (Exception ex)
         {
             Debug.LogError("Decryption error: " + ex.Message);
+            return null;
         }
     }
 
-    private byte[] DecryptBytes(byte[] bytesToDecrypt, string key)
+    private byte[] DeriveKey(string password)
     {
-        using (Aes aes = Aes.Create())
+        const int KeySize = 256;
+        using (var sha256 = SHA256.Create())
         {
-            aes.Key = Encoding.UTF8.GetBytes(key);
-            aes.IV = new byte[aes.BlockSize / 8];
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, aes.CreateDecryptor(), CryptoStreamMode.Write))
-                {
-                    cryptoStream.Write(bytesToDecrypt, 0, bytesToDecrypt.Length);
-                    cryptoStream.FlushFinalBlock();
-                    return memoryStream.ToArray();
-                }
-            }
+            byte[] keyBytes = Encoding.UTF8.GetBytes(password);
+            byte[] hash = sha256.ComputeHash(keyBytes);
+            return hash.Take(KeySize / 8).ToArray();
         }
     }
-
 }
 
 

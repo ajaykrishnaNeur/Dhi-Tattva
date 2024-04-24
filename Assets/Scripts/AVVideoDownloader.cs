@@ -30,7 +30,7 @@ public class AVVideoDownloader : MonoBehaviour
     public string encryptionKey = "yourEncryptionKey"; // Change this to your actual encryption key
     private const int KeySize = 256;
 
-    private byte[] DeriveKey(string password)
+    public byte[] DeriveKey(string password)
     {
         using (var sha256 = SHA256.Create())
         {
@@ -48,7 +48,7 @@ public class AVVideoDownloader : MonoBehaviour
         {
             Debug.Log("Video already exists locally at: " + savePath);
             PathText.text = savePath;
-            aVVideoPlayer.PlayVideo();
+            aVVideoPlayer.PlayVideo(savePath);
         }
         else
         {
@@ -80,7 +80,7 @@ public class AVVideoDownloader : MonoBehaviour
                 Debug.Log("Video encrypted successfully: " + encryptedFilePath);
 
                 PathText.text = encryptedFilePath;
-                aVVideoPlayer.PlayVideo();
+                aVVideoPlayer.PlayVideo(encryptedFilePath);
             }
             else
             {
@@ -102,10 +102,12 @@ public class AVVideoDownloader : MonoBehaviour
             using (FileStream outputStream = new FileStream(encryptedFilePath, FileMode.Create, FileAccess.Write))
             using (Aes aes = Aes.Create())
             {
-                aes.Key = key;
+                // Generate a random initialization vector (IV)
                 aes.IV = new byte[aes.BlockSize / 8];
+                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+                rng.GetBytes(aes.IV);
 
-                using (CryptoStream cryptoStream = new CryptoStream(outputStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                using (CryptoStream cryptoStream = new CryptoStream(outputStream, aes.CreateEncryptor(key, aes.IV), CryptoStreamMode.Write))
                 {
                     byte[] buffer = new byte[bufferSize];
                     int bytesRead;
