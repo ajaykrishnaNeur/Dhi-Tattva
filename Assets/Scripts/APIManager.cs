@@ -5,15 +5,38 @@ using UnityEngine.Networking;
 
 public class APIManager : MonoBehaviour
 {
-    private DataHandlerTest dataHandler;
-    public string registerApi;
+    private DataHandler dataHandler;
+    public string activeApi;
+    public string loginApi;
     private string Response;
 
     
     void Start()
     {
-        dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandlerTest>();
+        dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
+        StartCoroutine(GetRequest(activeApi));
     }
+
+    IEnumerator GetRequest(string url)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("GET request failed: " + webRequest.error);
+                dataHandler.LoginPanelActive();
+            }
+            else
+            {
+                // Print the received data
+                Debug.Log("GET request successful: " + webRequest.downloadHandler.text);
+            }
+        }
+    }
+
 
     public IEnumerator PostRequest(string url, string jsonData)
     {

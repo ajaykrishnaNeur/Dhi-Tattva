@@ -670,8 +670,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   welcomePanel: {fileID: 1041268451}
-  verificationPanel: {fileID: 0}
-  AdminPanel: {fileID: 0}
+  Numpad: {fileID: 503445663599321435}
+  submitBtn: {fileID: 34915478}
+  verificationPanel: {fileID: 825564175}
+  AdminPanel: {fileID: 2015973807}
 --- !u!1 &109924197
 GameObject:
   m_ObjectHideFlags: 0
@@ -4115,7 +4117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 477d15e719f69f7449da7be6fb4700b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerApi: 
+  activeApi: http://43.204.38.188:8000/v1/packages/active_package
 --- !u!1001 &1331242747
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4882,7 +4884,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1583215850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4895,7 +4897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39b3a9c49379fe249bbbd54917a2e667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverUrl: http://192.168.0.11:8080/
+  serverUrl: ws://43.204.38.188:8001
 --- !u!4 &1583215851
 Transform:
   m_ObjectHideFlags: 0

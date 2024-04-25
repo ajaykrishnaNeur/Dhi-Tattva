@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DataHandler : MonoBehaviour
 {
-    public GameObject welcomePanel;
+    public GameObject welcomePanel,Numpad,submitBtn;
     public GameObject verificationPanel;
     public GameObject AdminPanel;
 
@@ -13,12 +13,19 @@ public class DataHandler : MonoBehaviour
     void Start()
     {
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
-        
+
     }
 
     public void JsonParserData(string _webData)
     {
-       
 
+
+    }
+
+    public void LoginPanelActive()
+    {
+        AdminPanel.SetActive(true);
+        Numpad.SetActive(true);
+        submitBtn.SetActive(true);
     }
 }
