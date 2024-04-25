@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Test/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/AVProVideo/Demos/Scenes/Demo_360Stereo 1.unity
     guid: 2ab812dfe94e65d4981efbe9f270b16e
+  - enabled: 1
+    path: Assets/Scenes/DhiTattva.unity
+    guid: 0ff31e4cd13e79c4885e7af996af0e4b
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a7c6c8452d8219c4688945ed40977d62, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 67bfc2ded81e247439add0dfef85ee5f, type: 2}

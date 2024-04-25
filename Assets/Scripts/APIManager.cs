@@ -42,6 +42,7 @@ public class APIManager : MonoBehaviour
         {
             Debug.Log("Request successful!");
             dataHandler.welcomePanel.SetActive(true);
+            Debug.Log("return" + request.downloadHandler.text);
         }
     }
 
@@ -52,6 +53,7 @@ public class APIManager : MonoBehaviour
         req.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
 
         req.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        req.SetRequestHeader("Content-Type", "application/json");
 
         yield return req.SendWebRequest();
         if (req.isNetworkError) // error in request
@@ -60,9 +62,24 @@ public class APIManager : MonoBehaviour
         }
         else // done
         {
+
             Debug.Log("return" + req.downloadHandler.text);
             string value = req.downloadHandler.text;
+            
+        }
+        if (req.downloadHandler.text.Contains("Enter valid device register code"))
+        {
+            //INCORRECT CODE    
+            dataHandler.WrongCredentialPanelActive();
+        }
+        if (req.downloadHandler.text.Contains("Device already paired"))
+        {           
             dataHandler.VerifiedPanelActive();
+        }
+        if (req.downloadHandler.text.Contains(SystemInfo.deviceUniqueIdentifier))
+        {
+            dataHandler.VerifiedPanelActive();
+
         }
     }
 }

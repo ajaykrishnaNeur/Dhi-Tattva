@@ -11,14 +11,9 @@ public class DataHandler : MonoBehaviour
     public GameObject welcomePanel,Numpad,submitBtn;
     public GameObject verificationPanel;
     public GameObject AdminPanel;
-
+    public GameObject incorrectCodeText;
     public TMP_InputField code_Inputfield;
     private APIManager apiManager;
-
-    public class DeviceIdFetch
-    {
-        public string DeviceId;
-    }
 
     public class LoginCode
     {
@@ -30,16 +25,6 @@ public class DataHandler : MonoBehaviour
     {
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
     }
-
-    public void DeviceId()
-    {
-        DeviceIdFetch deviceIdFetch = new DeviceIdFetch();
-        deviceIdFetch.DeviceId = SystemInfo.deviceUniqueIdentifier;
-
-        string jsonData = JsonConvert.SerializeObject(deviceIdFetch);
-        StartCoroutine(apiManager.DeviceIdPostRequest("http://43.204.38.188:8000/v1/packages/active_package", jsonData));
-    }
-
 
     public void LoginPanelActive()
     {
@@ -62,7 +47,7 @@ public class DataHandler : MonoBehaviour
     }
     public void WrongCredentialPanelActive()
     {
-
+        incorrectCodeText.SetActive(true);
     }
 
     public void Login()
