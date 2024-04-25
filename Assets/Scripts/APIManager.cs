@@ -5,14 +5,14 @@ using UnityEngine.Networking;
 
 public class APIManager : MonoBehaviour
 {
-    private DataHandler dataHandler;
+    private DataHandlerTest dataHandler;
     public string registerApi;
     private string Response;
 
     
     void Start()
     {
-        dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
+        dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandlerTest>();
     }
 
     public IEnumerator PostRequest(string url, string jsonData)
