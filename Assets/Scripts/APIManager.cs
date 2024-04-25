@@ -41,7 +41,7 @@ public class APIManager : MonoBehaviour
         else
         {
             Debug.Log("Request successful!");
-            dataHandler.welcomePanel.SetActive(true);
+            dataHandler.VerifiedPanelActive();
             Debug.Log("return" + request.downloadHandler.text);
         }
     }
