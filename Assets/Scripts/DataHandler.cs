@@ -29,7 +29,6 @@ public class DataHandler : MonoBehaviour
     void Start()
     {
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
-        DeviceId();
     }
 
     public void DeviceId()
@@ -41,11 +40,6 @@ public class DataHandler : MonoBehaviour
         StartCoroutine(apiManager.DeviceIdPostRequest("http://43.204.38.188:8000/v1/packages/active_package", jsonData));
     }
 
-    public void JsonParserData(string _webData)
-    {
-
-
-    }
 
     public void LoginPanelActive()
     {
@@ -54,13 +48,32 @@ public class DataHandler : MonoBehaviour
         submitBtn.SetActive(true);
     }
 
+    public void VerifiedPanelActive()
+    {
+        AdminPanel.SetActive(false);
+        Numpad.SetActive(false);
+        submitBtn.SetActive(false);
+        verificationPanel.SetActive(true);
+    }
+
+    public void WelcomePanelActive()
+    {
+        welcomePanel.SetActive(true);
+    }
+    public void WrongCredentialPanelActive()
+    {
+
+    }
+
     public void Login()
     {
-        LoginCode loginCode = new LoginCode();
-        loginCode.DeviceId = SystemInfo.deviceUniqueIdentifier;
-        loginCode.code = code_Inputfield.text;
+        LoginCode loginCode = new LoginCode()
+        {
+            DeviceId = SystemInfo.deviceUniqueIdentifier,
+            code = code_Inputfield.text,
+        };
 
         string jsonData = JsonConvert.SerializeObject(loginCode);
-        StartCoroutine(apiManager.LoginPostRequest("http://43.204.38.188:8000/v1/packages/active_package", jsonData));
+        StartCoroutine(apiManager.LoginPostRequest("http://43.204.38.188:8000/v1/devices/register", jsonData));
     }
 }

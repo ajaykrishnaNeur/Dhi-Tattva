@@ -14,23 +14,23 @@ public class TutorialAPI : MonoBehaviour
     }
     public class Login
     {
-        public string username;
-        public string password;
+        public string DeviceId;
+        public string code;
         
     }
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(WebGetRequest("https://jsonplaceholder.typicode.com/todos/1"));
+        //StartCoroutine(WebGetRequest("https://jsonplaceholder.typicode.com/todos/1"));
         Login loginData = new Login()
         {
-            username = "kminchelle",
-            password = "0lelplR",
+            DeviceId = SystemInfo.deviceUniqueIdentifier,
+            code = "654363",
           // optional, defaults to 60
         };
         string jsonData = JsonUtility.ToJson(loginData);
 
-        StartCoroutine(PostRequest("https://dummyjson.com/auth/login", jsonData));
+        StartCoroutine(PostRequest("http://43.204.38.188:8000/v1/devices/register", jsonData));
     }
 
     // Update is called once per frame
