@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.Video;
 
 public class AVVideoDownloader : MonoBehaviour
 {
@@ -18,23 +19,11 @@ public class AVVideoDownloader : MonoBehaviour
     public TextMeshProUGUI slidervalue;
     public AVVideoPlayer aVVideoPlayer;
 
-    public APIManager apiManager;
+    
     //save video into url video name
     public string videoUrlName;
-
-    public int videoCount;
     void Start()
     {
-        
-        int index = videoURL.IndexOf("videos/");
-        apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
-        videoCount = apiManager.videoCount;
-        // If "videos" is found, extract the substring after it
-        if (index != -1)
-        {
-            videoUrlName = videoURL.Substring(index + "videos/".Length);
-            Debug.Log(videoUrlName);
-        }
         savePath = Path.Combine(Application.persistentDataPath, videoUrlName);
 
         // Check if the video file already exists locally
@@ -64,7 +53,7 @@ public class AVVideoDownloader : MonoBehaviour
                 if (progressSlider != null)
                 {
                     progressSlider.value = www.downloadProgress;
-                    slidervalue.text= progressSlider.value.ToString();
+                    slidervalue.text = progressSlider.value.ToString();
                 }
                 yield return null;
             }

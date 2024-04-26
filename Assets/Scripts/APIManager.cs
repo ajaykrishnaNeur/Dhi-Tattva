@@ -15,8 +15,9 @@ public class APIManager : MonoBehaviour
 
     [SerializeField]
     public int videoCount;
-
+    [SerializeField]
     public string id1, thumbnail1,description1,title1,urlvideo1;
+    [SerializeField]
     public string id2, thumbnail2, description2, title2, urlvideo2;
     void Start()
     {
