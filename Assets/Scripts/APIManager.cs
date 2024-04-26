@@ -16,9 +16,6 @@ public class APIManager : MonoBehaviour
     [SerializeField]
     public int videoCount;
 
-    public string video1Name;
-    public string video2Name;
-
     private List<string> videoNames = new List<string>();
     void Start()
     {
@@ -59,21 +56,12 @@ public class APIManager : MonoBehaviour
             foreach (JObject video in videosArray)
             {
                 string videoTitle = (string)video["title"];
-                videoNames.Add(videoTitle);
+
             }
 
-            // Output the video names
-            for (int i = 0; i < videoCount; i++)
+            foreach (string name in videoNames)
             {
-                Debug.Log("Video Name:" +i + name);
-                if(i == 0)
-                {
-                    video1Name = name;
-                }
-                if (i ==1)
-                {
-                    video2Name = name;
-                }
+                Debug.Log("Video Name: " + name);
             }
             // Output the video count
             Debug.Log("Number of videos: " + videoCount);
