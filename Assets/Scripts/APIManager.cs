@@ -16,7 +16,8 @@ public class APIManager : MonoBehaviour
     [SerializeField]
     public int videoCount;
 
-    private List<string> videoNames = new List<string>();
+    public string id1, thumbnail1,description1,title1,urlvideo1;
+    public string id2, thumbnail2, description2, title2, urlvideo2;
     void Start()
     {
         deviceId = SystemInfo.deviceUniqueIdentifier;
@@ -52,21 +53,30 @@ public class APIManager : MonoBehaviour
 
             // Count the number of videos
             videoCount = videosArray.Count;
-
-            foreach (JObject video in videosArray)
-            {
-                string videoTitle = (string)video["title"];
-
-            }
-
-            foreach (string name in videoNames)
-            {
-                Debug.Log("Video Name: " + name);
-            }
-            // Output the video count
             Debug.Log("Number of videos: " + videoCount);
+            for (int i = 0; i < videoCount; i++)
+            {
+                JObject video = (JObject)videosArray[i];
 
-            dataHandler.VerifiedPanelActive();
+                if(i == 0)
+                {
+                     urlvideo1 = (string)video["url"];
+                     title1 = (string)video["title"];
+                     description1 = (string)video["description"];
+                     thumbnail1 = (string)video["thumbnail"];
+                     id1 = (string)video["id"];
+                }
+                if (i == 1)
+                {
+                     urlvideo2 = (string)video["url"];
+                     title2 = (string)video["title"];
+                     description2 = (string)video["description"];
+                     thumbnail2 = (string)video["thumbnail"];
+                     id2 = (string)video["id"];
+                }
+                
+            }
+                dataHandler.VerifiedPanelActive();
             Debug.Log("return-1" + jsonResponse);
         }
     }
