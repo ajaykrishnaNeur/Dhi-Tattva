@@ -5,6 +5,7 @@ using SocketIOClient;
 using System;
 using TMPro;
 using SimpleJSON;
+using UnityEngine.Video;
 
 public class SocketIOManager : MonoBehaviour
 {
@@ -13,8 +14,10 @@ public class SocketIOManager : MonoBehaviour
 
     public AVVideoPlayer avVideoPlayer;
     public AVVideoDownloader videoDownloader;
+    public bool isFirst;
     void Start()
     {
+        isFirst = true;
         // Setup the Socket.IO connection
         var uri = new Uri(serverUrl);
         socket = new SocketIOUnity(uri, new SocketIOOptions
@@ -65,7 +68,7 @@ public class SocketIOManager : MonoBehaviour
     }
 
   
-    IEnumerator CheckConnectionTimeout(float timeoutSeconds = 15f)
+    IEnumerator CheckConnectionTimeout(float timeoutSeconds = 60f)
     {
         yield return new WaitForSeconds(timeoutSeconds);
 
@@ -119,12 +122,12 @@ public class SocketIOManager : MonoBehaviour
             if(play && !restart)
             {
                 Debug.Log("played");
-                avVideoPlayer.PlayVideo();
-
+                
 
             }
             if (!play && restart)
             {
+                avVideoPlayer.StartPlay();
                 Debug.Log("restarted");
                 avVideoPlayer.RestartVideo();
             }
@@ -141,4 +144,6 @@ public class SocketIOManager : MonoBehaviour
         // Properly disconnect the client when the object is destroyed
         socket.Disconnect();
     }
+
+   
 }

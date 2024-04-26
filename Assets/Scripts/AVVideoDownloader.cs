@@ -69,8 +69,8 @@ public class AVVideoDownloader : MonoBehaviour
                 dataHandler.WelcomePanelActive();
                 socket.SetActive(true);
                 //pathText.text = savePath;
-                //aVVideoPlayer.PlayVideo(); // Play the video after downloading
-            }
+                aVVideoPlayer.PlayVideo(); // Play the video after downloading
+         }
             else
             {
                 Debug.Log("Error downloading video: " + www.error);
@@ -78,8 +78,5 @@ public class AVVideoDownloader : MonoBehaviour
         }
     }
 
-    public void PlayVideoo()
-    {
-        aVVideoPlayer.PlayVideo();
-    }
+ 
 }

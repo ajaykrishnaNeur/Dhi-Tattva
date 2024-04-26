@@ -13,6 +13,8 @@ public class AVVideoPlayer : MonoBehaviour
     private APIManager apiManager;
 
     public string videoPath;
+
+    public GameObject sphere;
     private void Start()
     {
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
@@ -28,8 +30,9 @@ public class AVVideoPlayer : MonoBehaviour
         }
 
         string fullPath = Path.Combine(Application.persistentDataPath, videoPath);
-
-       bool isOpening = mediaPlayer.OpenMedia(new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL), autoPlay: true);
+        
+        MediaPath mediaPath = new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL);
+        bool isOpening = mediaPlayer.OpenMedia(new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL));
         if (!isOpening)
         {
             Debug.LogError("Failed to open video: " + fullPath);
@@ -44,10 +47,18 @@ public class AVVideoPlayer : MonoBehaviour
     public void ResumeVideo()
     {
         mediaPlayer.Play();
+        sphere.SetActive(true);
     }
     public void RestartVideo()
     {
         mediaPlayer.Control.Seek(0f);
+    }
+
+    public void StartPlay() 
+    {
+        sphere.SetActive(true);
+        RestartVideo();
+        ResumeVideo();
     }
 }
 
