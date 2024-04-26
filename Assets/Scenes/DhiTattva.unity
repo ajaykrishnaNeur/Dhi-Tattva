@@ -844,6 +844,8 @@ MonoBehaviour:
   slidervalue: {fileID: 1526379633}
   aVVideoPlayer: {fileID: 1258629146}
   apiManager: {fileID: 1272782185}
+  dataHandler: {fileID: 0}
+  socket: {fileID: 1583215849}
 --- !u!4 &176214744
 Transform:
   m_ObjectHideFlags: 0
@@ -4684,7 +4686,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258629145}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17e0a3e1ed62a36438973d6a2ee5d385, type: 3}
   m_Name: 

@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Net.Sockets;
 
 public class AVVideoDownloader : MonoBehaviour
 {
@@ -13,9 +14,12 @@ public class AVVideoDownloader : MonoBehaviour
     public TextMeshProUGUI slidervalue;
     public AVVideoPlayer aVVideoPlayer;
     public APIManager apiManager;
-
+    public DataHandler dataHandler;
+    public GameObject socket;
     private void Start()
     {
+        apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>(); 
+        dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         for (int i = 0; i < apiManager.videoCount; i++)
         {
             StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], apiManager.GetVideoName[i]));
@@ -31,7 +35,7 @@ public class AVVideoDownloader : MonoBehaviour
         {
             Debug.Log("Video already exists locally at: " + savePath);
             //pathText.text = savePath;
-            aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
+/*            aVVideoPlayer.PlayVideo(); */// Assuming you want to play the video if it already exists
             yield break; // Exit the coroutine early
         }
 
@@ -61,8 +65,10 @@ public class AVVideoDownloader : MonoBehaviour
             {
                 progressSlider.value = 100;
                 Debug.Log("Video downloaded successfully to: " + savePath);
+                dataHandler.WelcomePanelActive();
+                socket.SetActive(true);
                 //pathText.text = savePath;
-                aVVideoPlayer.PlayVideo(); // Play the video after downloading
+/*                aVVideoPlayer.PlayVideo();*/ // Play the video after downloading
             }
             else
             {
