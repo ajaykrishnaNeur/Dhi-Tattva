@@ -11,7 +11,8 @@ public class SocketIOManager : MonoBehaviour
     private SocketIOUnity socket;
     public string serverUrl; // Replace with your server's address
 
-    public AVVideoPlayer player;
+    public AVVideoPlayer avVideoPlayer;
+    public AVVideoDownloader videoDownloader;
     void Start()
     {
         // Setup the Socket.IO connection
@@ -118,15 +119,19 @@ public class SocketIOManager : MonoBehaviour
             if(play && !restart)
             {
                 Debug.Log("played");
+                avVideoPlayer.PlayVideo();
+
 
             }
             if (!play && restart)
             {
                 Debug.Log("restarted");
+                avVideoPlayer.RestartVideo();
             }
             if (!play && !restart)
             {
                 Debug.Log("paused");
+                avVideoPlayer.PauseVideo();
             }
         });
 

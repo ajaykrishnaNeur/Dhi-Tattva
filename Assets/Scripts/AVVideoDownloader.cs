@@ -16,6 +16,7 @@ public class AVVideoDownloader : MonoBehaviour
     public APIManager apiManager;
     public DataHandler dataHandler;
     public GameObject socket;
+    public string savePath;
     private void Start()
     {
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>(); 
@@ -28,14 +29,14 @@ public class AVVideoDownloader : MonoBehaviour
 
     IEnumerator DownloadVideoCoroutine(string videoURL, string videoName )
     {
-        string savePath = Path.Combine(Application.persistentDataPath, videoName);
+         savePath = Path.Combine(Application.persistentDataPath, videoName);
 
         // Check if the video file already exists locally
         if (File.Exists(savePath))
         {
             Debug.Log("Video already exists locally at: " + savePath);
             //pathText.text = savePath;
-/*            aVVideoPlayer.PlayVideo(); */// Assuming you want to play the video if it already exists
+            //aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
             yield break; // Exit the coroutine early
         }
 
@@ -68,12 +69,17 @@ public class AVVideoDownloader : MonoBehaviour
                 dataHandler.WelcomePanelActive();
                 socket.SetActive(true);
                 //pathText.text = savePath;
-/*                aVVideoPlayer.PlayVideo();*/ // Play the video after downloading
+                //aVVideoPlayer.PlayVideo(); // Play the video after downloading
             }
             else
             {
                 Debug.Log("Error downloading video: " + www.error);
             }
         }
+    }
+
+    public void PlayVideoo()
+    {
+        aVVideoPlayer.PlayVideo();
     }
 }

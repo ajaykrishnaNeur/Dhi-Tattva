@@ -42,6 +42,7 @@ public class DataHandler : MonoBehaviour
 
     public void WelcomePanelActive()
     {
+        verificationPanel.SetActive(false);
         welcomePanel.SetActive(true);
     }
     public void WrongCredentialPanelActive()
@@ -49,6 +50,7 @@ public class DataHandler : MonoBehaviour
         incorrectCodeText.SetActive(true);
     }
 
+    
     public void Login()
     {
         LoginCode loginCode = new LoginCode()

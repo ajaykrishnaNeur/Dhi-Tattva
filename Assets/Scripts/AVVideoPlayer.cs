@@ -12,13 +12,14 @@ public class AVVideoPlayer : MonoBehaviour
     public AVVideoDownloader videoDownloader;
     private APIManager apiManager;
 
+    public string videoPath;
     private void Start()
     {
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
     }
     public void PlayVideo()
     {
-        string videoPath = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[0] );
+        videoPath = videoDownloader.savePath;
 
         if (!mediaPlayer)
         {
@@ -26,14 +27,27 @@ public class AVVideoPlayer : MonoBehaviour
             return;
         }
 
-        string fullPath = System.IO.Path.Combine(Application.streamingAssetsPath, videoPath);
+        string fullPath = Path.Combine(Application.persistentDataPath, videoPath);
 
-        bool isOpening = mediaPlayer.OpenMedia(new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL), autoPlay: true);
-
+       bool isOpening = mediaPlayer.OpenMedia(new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL), autoPlay: true);
         if (!isOpening)
         {
             Debug.LogError("Failed to open video: " + fullPath);
         }
+    }
+
+    public void PauseVideo()
+    {
+        mediaPlayer.Play();
+        mediaPlayer.Pause();
+    }
+    public void ResumeVideo()
+    {
+        mediaPlayer.Play();
+    }
+    public void RestartVideo()
+    {
+        mediaPlayer.Control.Seek(0f);
     }
 }
 
