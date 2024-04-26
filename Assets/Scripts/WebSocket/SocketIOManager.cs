@@ -11,6 +11,7 @@ public class SocketIOManager : MonoBehaviour
     private SocketIOUnity socket;
     public string serverUrl; // Replace with your server's address
 
+    public AVVideoPlayer player;
     void Start()
     {
         // Setup the Socket.IO connection
@@ -113,7 +114,20 @@ public class SocketIOManager : MonoBehaviour
             string packageId = jsonObject["package_id"].Value;
 
             // Now you can use these values as needed
-            Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
+            //Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
+            if(play && !restart)
+            {
+                Debug.Log("played");
+
+            }
+            if (!play && restart)
+            {
+                Debug.Log("restarted");
+            }
+            if (!play && !restart)
+            {
+                Debug.Log("paused");
+            }
         });
 
     }
