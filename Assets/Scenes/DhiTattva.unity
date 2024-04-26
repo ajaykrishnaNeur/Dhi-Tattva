@@ -4965,7 +4965,7 @@ MonoBehaviour:
   mediaPlayer: {fileID: 1258629147}
   videoDownloader: {fileID: 176214743}
   videoPath: 
-  sphere: {fileID: 0}
+  sphere: {fileID: 1347820437}
 --- !u!114 &1258629147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6659,6 +6659,7 @@ MonoBehaviour:
   avVideoPlayer: {fileID: 1258629146}
   videoDownloader: {fileID: 176214743}
   isFirst: 0
+  sphere: {fileID: 1347820437}
 --- !u!4 &1583215851
 Transform:
   m_ObjectHideFlags: 0

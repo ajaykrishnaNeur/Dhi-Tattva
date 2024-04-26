@@ -15,9 +15,13 @@ public class SocketIOManager : MonoBehaviour
     public AVVideoPlayer avVideoPlayer;
     public AVVideoDownloader videoDownloader;
     public bool isFirst;
+    public GameObject sphere;
+
+    public bool play, restart;
+    public string videoId, packageId;
     void Start()
     {
-        isFirst = true;
+        isFirst = false;
         // Setup the Socket.IO connection
         var uri = new Uri(serverUrl);
         socket = new SocketIOUnity(uri, new SocketIOOptions
@@ -61,9 +65,7 @@ public class SocketIOManager : MonoBehaviour
         // Connect to the server
         socket.Connect();
         StartCoroutine(CheckConnectionTimeout());
-        //  StartCoroutine(CallAfter());
         ReciveDeviceDetails();
-        //Debug.Log("deviceId is" + SystemInfo.deviceUniqueIdentifier);
 
     }
 
@@ -78,27 +80,6 @@ public class SocketIOManager : MonoBehaviour
             Debug.LogError("Connection attempt timed out.");
         }
     }
-    // Example of sending a message to the server when the space key is pressed
-    void Update()
-    {
-       
-        
-
-    }
-  /*  public void ActiveDeviceStatus(bool value)
-    {
-
-        DeviceStatus status = new DeviceStatus
-        {
-            deviceId = SystemInfo.deviceUniqueIdentifier,
-            //deviceId ="abxcdfg",
-            isOnline = value
-        };
-
-        socket.Emit("commandTracker", JsonUtility.ToJson(status)); //send as json
-                                                                 //socket.Emit("activeDevice", status);// send as object
-
-    }*/
  
     public void ReciveDeviceDetails()
     {
@@ -112,22 +93,20 @@ public class SocketIOManager : MonoBehaviour
             var jsonObject = JSON.Parse(jsonString);
 
             // Access individual properties
-            bool play = jsonObject["play"].AsBool;
-            bool restart = jsonObject["restart"].AsBool;
-            string videoId = jsonObject["video_id"].Value;
-            string packageId = jsonObject["package_id"].Value;
-
-            // Now you can use these values as needed
+             play = jsonObject["play"].AsBool;
+             restart = jsonObject["restart"].AsBool;
+             videoId = jsonObject["video_id"].Value;
+             packageId = jsonObject["package_id"].Value;
             //Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
             if(play && !restart)
             {
                 Debug.Log("played");
-                
-
+                //sphere.SetActive(true);
+                isFirst = true;
             }
             if (!play && restart)
             {
-                avVideoPlayer.StartPlay();
+                
                 Debug.Log("restarted");
                 avVideoPlayer.RestartVideo();
             }
@@ -136,7 +115,7 @@ public class SocketIOManager : MonoBehaviour
                 Debug.Log("paused");
                 avVideoPlayer.PauseVideo();
             }
-        });
+       });
 
     }
     void OnDestroy()
@@ -145,5 +124,14 @@ public class SocketIOManager : MonoBehaviour
         socket.Disconnect();
     }
 
-   
+    private void Update()
+    {
+        if (isFirst)
+        {
+            sphere.SetActive(true);
+            isFirst = false;
+
+        }
+    }
+
 }

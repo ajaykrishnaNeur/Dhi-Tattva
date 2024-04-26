@@ -46,7 +46,6 @@ public class AVVideoPlayer : MonoBehaviour
     }
     public void ResumeVideo()
     {
-        mediaPlayer.Play();
         sphere.SetActive(true);
     }
     public void RestartVideo()
