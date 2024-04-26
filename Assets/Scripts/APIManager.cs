@@ -1,4 +1,6 @@
+using Newtonsoft.Json.Linq;
 using Oculus.Platform;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -9,10 +11,15 @@ public class APIManager : MonoBehaviour
 {
     private DataHandler dataHandler;
     public string activeApi;
-    private string Response;
-
     private string deviceId;
 
+    [SerializeField]
+    public int videoCount;
+
+    public string video1Name;
+    public string video2Name;
+
+    private List<string> videoNames = new List<string>();
     void Start()
     {
         deviceId = SystemInfo.deviceUniqueIdentifier;
@@ -20,14 +27,12 @@ public class APIManager : MonoBehaviour
         StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
     }
 
-
-
     public IEnumerator DeviceIdPostRequest(string url, string headername)
     {
         UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm());
 
         // Add custom header to the request
-        request.SetRequestHeader("device-id", headername); // Replace "Your-Header-Value" with the actual value
+        request.SetRequestHeader("device-id", headername); 
 
         // Send the request
         yield return request.SendWebRequest();
@@ -41,8 +46,40 @@ public class APIManager : MonoBehaviour
         else
         {
             Debug.Log("Request successful!");
+
+            string jsonResponse = request.downloadHandler.text;
+            JObject jsonObject = JObject.Parse(jsonResponse);
+
+            // Get the 'videos' array from the JSON
+            JArray videosArray = (JArray)jsonObject["activePackage"]["videos"];
+
+            // Count the number of videos
+            videoCount = videosArray.Count;
+
+            foreach (JObject video in videosArray)
+            {
+                string videoTitle = (string)video["title"];
+                videoNames.Add(videoTitle);
+            }
+
+            // Output the video names
+            for (int i = 0; i < videoCount; i++)
+            {
+                Debug.Log("Video Name:" +i + name);
+                if(i == 0)
+                {
+                    video1Name = name;
+                }
+                if (i ==1)
+                {
+                    video2Name = name;
+                }
+            }
+            // Output the video count
+            Debug.Log("Number of videos: " + videoCount);
+
             dataHandler.VerifiedPanelActive();
-            Debug.Log("return" + request.downloadHandler.text);
+            Debug.Log("return-1" + jsonResponse);
         }
     }
 

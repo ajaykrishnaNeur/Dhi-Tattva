@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using Newtonsoft.Json;
 using UnityEngine.UI;
-using static DataHandler;
 
 public class DataHandler : MonoBehaviour
 {

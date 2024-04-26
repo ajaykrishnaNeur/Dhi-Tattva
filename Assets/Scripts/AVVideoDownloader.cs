@@ -18,15 +18,17 @@ public class AVVideoDownloader : MonoBehaviour
     public TextMeshProUGUI slidervalue;
     public AVVideoPlayer aVVideoPlayer;
 
-    public GameObject sliderandText;
-
-
+    public APIManager apiManager;
     //save video into url video name
     public string videoUrlName;
+
+    public int videoCount;
     void Start()
     {
+        
         int index = videoURL.IndexOf("videos/");
-
+        apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
+        videoCount = apiManager.videoCount;
         // If "videos" is found, extract the substring after it
         if (index != -1)
         {
@@ -40,7 +42,6 @@ public class AVVideoDownloader : MonoBehaviour
         {
             Debug.Log("Video already exists locally at: " + savePath);
             PathText.text = savePath;
-            //sliderandText.SetActive(false);
             aVVideoPlayer.GetComponent<AVVideoPlayer>().PlayVideo();
         }
         else
