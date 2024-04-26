@@ -12,7 +12,7 @@ public class AVVideoPlayer : MonoBehaviour
     public AVVideoDownloader videoDownloader;
     public void PlayVideo()
     {
-        string videoPath = Path.Combine(Application.persistentDataPath, videoDownloader.videoUrlName);
+        string videoPath = Path.Combine(Application.persistentDataPath, videoDownloader.videoName1);
 
         if (!mediaPlayer)
         {
