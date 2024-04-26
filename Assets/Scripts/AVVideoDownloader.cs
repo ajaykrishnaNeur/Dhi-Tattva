@@ -5,73 +5,39 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-using UnityEngine.Video;
 
 public class AVVideoDownloader : MonoBehaviour
 {
-    public string videoURL;
-    //public string saveFileName; // Adjust the file name and extension as needed
-
-    private string savePath1,savePath2;
-    public TextMeshProUGUI pathText1,pathText2;
-    public Slider progressSlider; // Reference to a UI slider for progress display
-
+    public TextMeshProUGUI[] pathTexts = new TextMeshProUGUI[10];
+    public Slider progressSlider;
     public TextMeshProUGUI slidervalue;
     public AVVideoPlayer aVVideoPlayer;
-    public string videoName1,videoName2;
-
     public APIManager apiManager;
-    public int videoCount;
-    void Start()
-    {
-        
-        apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
-        videoName1 = apiManager.title1;
-        videoCount = apiManager.videoCount;
-        videoURL = apiManager.urlvideo1;
-        if (videoCount == 2)
-        {
-            savePath1 = Path.Combine(Application.persistentDataPath, videoName1);
-            // Check if the video file already exists locally
-            if (File.Exists(savePath1))
-            {
-                Debug.Log("Video already exists locally at: " + savePath1);
-                pathText1.text = savePath1;
-                aVVideoPlayer.GetComponent<AVVideoPlayer>().PlayVideo();
-            }
-            else
-            {
-                // If the video doesn't exist locally, download it
-                StartCoroutine(DownloadVideo1Coroutine());
-            }
-        }
-        if (videoCount == 0)
-        {
-            savePath1 = Path.Combine(Application.persistentDataPath, videoName1);
-            savePath2 = Path.Combine(Application.persistentDataPath, videoName2);
-            // Check if the video file already exists locally
-            if (File.Exists(savePath1) && File.Exists(savePath2))
-            {
-                Debug.Log("Video1 already exists locally at: " + savePath1);
-                Debug.Log("Video2 already exists locally at: " + savePath2);
-                pathText1.text = savePath1;
-                pathText2.text = savePath2;
-                aVVideoPlayer.GetComponent<AVVideoPlayer>().PlayVideo();
-            }
-            else
-            {
-                // If the video doesn't exist locally, download it
-                StartCoroutine(DownloadVideo1Coroutine());
-            }
-        }
 
+    private void Start()
+    {
+        for (int i = 0; i < apiManager.videoCount; i++)
+        {
+            StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], apiManager.GetVideoName[i]));
+        }
     }
 
-    IEnumerator DownloadVideo1Coroutine()
+    IEnumerator DownloadVideoCoroutine(string videoURL, string videoName )
     {
+        string savePath = Path.Combine(Application.persistentDataPath, videoName);
+
+        // Check if the video file already exists locally
+        if (File.Exists(savePath))
+        {
+            Debug.Log("Video already exists locally at: " + savePath);
+            //pathText.text = savePath;
+            aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
+            yield break; // Exit the coroutine early
+        }
+
         using (UnityWebRequest www = UnityWebRequest.Get(videoURL))
         {
-            www.downloadHandler = new DownloadHandlerFile(Path.Combine(Application.persistentDataPath, videoName1));
+            www.downloadHandler = new DownloadHandlerFile(savePath);
             www.SendWebRequest();
 
             while (!www.isDone)
@@ -80,23 +46,23 @@ public class AVVideoDownloader : MonoBehaviour
                 if (progressSlider != null)
                 {
                     // Scale www.downloadProgress from 0-1 to 0-100
-                    int scaledProgress = (int)(www.downloadProgress * 100)/2;
+                    int scaledProgress = (int)(www.downloadProgress * 100);
 
                     // Assign the scaled progress value to progressSlider
                     progressSlider.value = scaledProgress;
 
                     // Update slidervalue text
-                    slidervalue.text = (scaledProgress/2).ToString();
+                    slidervalue.text = scaledProgress.ToString();
                 }
                 yield return null;
             }
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                string savePath = Path.Combine(Application.persistentDataPath, videoName1);
+                progressSlider.value = 100;
                 Debug.Log("Video downloaded successfully to: " + savePath);
-                pathText1.text = savePath;
-                //aVVideoPlayer.PlayVideo();
+                //pathText.text = savePath;
+                aVVideoPlayer.PlayVideo(); // Play the video after downloading
             }
             else
             {
@@ -104,5 +70,4 @@ public class AVVideoDownloader : MonoBehaviour
             }
         }
     }
-
 }

@@ -839,16 +839,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d624553b1712a4493cce8d1e2e05c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoURL: 
-  pathText1: {fileID: 1526379633}
-  pathText2: {fileID: 1526379633}
+  pathTexts: []
   progressSlider: {fileID: 2108750187}
   slidervalue: {fileID: 1526379633}
   aVVideoPlayer: {fileID: 1258629146}
-  videoName1: 
-  videoName2: 
   apiManager: {fileID: 1272782185}
-  videoCount: 0
 --- !u!4 &176214744
 Transform:
   m_ObjectHideFlags: 0
@@ -4950,6 +4945,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeApi: http://43.204.38.188:8000/v1/packages/active_package
   videoCount: 0
+  GetVideoURL:
+  - 
+  - 
+  GetVideoName:
+  - 
+  - 
   id1: 
   thumbnail1: 
   description1: 

@@ -10,9 +10,15 @@ public class AVVideoPlayer : MonoBehaviour
     //public string videoFileName;
     public MediaPlayer mediaPlayer;
     public AVVideoDownloader videoDownloader;
+    private APIManager apiManager;
+
+    private void Start()
+    {
+        apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
+    }
     public void PlayVideo()
     {
-        string videoPath = Path.Combine(Application.persistentDataPath, videoDownloader.videoName1);
+        string videoPath = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[0] );
 
         if (!mediaPlayer)
         {

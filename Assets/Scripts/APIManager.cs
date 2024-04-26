@@ -15,6 +15,8 @@ public class APIManager : MonoBehaviour
 
     [SerializeField]
     public int videoCount;
+
+    public string[] GetVideoURL = new string[10], GetVideoName = new string[10];
     [SerializeField]
     public string id1, thumbnail1,description1,title1,urlvideo1;
     [SerializeField]
@@ -62,7 +64,9 @@ public class APIManager : MonoBehaviour
                 if(i == 0)
                 {
                      urlvideo1 = (string)video["url"];
+                     GetVideoURL[0] = urlvideo1;
                      title1 = (string)video["title"];
+                     GetVideoName[0] = title1;
                      description1 = (string)video["description"];
                      thumbnail1 = (string)video["thumbnail"];
                      id1 = (string)video["id"];
@@ -70,7 +74,9 @@ public class APIManager : MonoBehaviour
                 if (i == 1)
                 {
                      urlvideo2 = (string)video["url"];
+                     GetVideoURL[1] = urlvideo2;
                      title2 = (string)video["title"];
+                     GetVideoName[1] = title2;
                      description2 = (string)video["description"];
                      thumbnail2 = (string)video["thumbnail"];
                      id2 = (string)video["id"];
