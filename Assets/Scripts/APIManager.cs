@@ -22,6 +22,8 @@ public class APIManager : MonoBehaviour
     public string id1, thumbnail1,description1,title1,urlvideo1;
     [SerializeField]
     public string id2, thumbnail2, description2, title2, urlvideo2;
+    [SerializeField]
+    public string packageId;
     void Start()
     {
         deviceId = SystemInfo.deviceUniqueIdentifier;
@@ -51,11 +53,9 @@ public class APIManager : MonoBehaviour
 
             string jsonResponse = request.downloadHandler.text;
             JObject jsonObject = JObject.Parse(jsonResponse);
-
+            packageId = (string)jsonObject["activePackage"]["id"]; 
             // Get the 'videos' array from the JSON
             JArray videosArray = (JArray)jsonObject["activePackage"]["videos"];
-
-            // Count the number of videos
             videoCount = videosArray.Count;
             Debug.Log("Number of videos: " + videoCount);
             for (int i = 0; i < videoCount; i++)

@@ -4,19 +4,20 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Video;
 using RenderHeads.Media.AVProVideo;
-
 public class AVVideoPlayer : MonoBehaviour
 {
     //public string videoFileName;
     public MediaPlayer mediaPlayer;
     public AVVideoDownloader videoDownloader;
     private APIManager apiManager;
+    private DataHandler dataHandler;
 
     public string videoPath;
 
     public GameObject sphere;
     private void Start()
     {
+        dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
     }
     public void PlayVideo()
@@ -59,6 +60,7 @@ public class AVVideoPlayer : MonoBehaviour
         sphere.SetActive(true);
         RestartVideo();
         ResumeVideo();
+        dataHandler.WelcomePanelDisable();
     }
 }
 
