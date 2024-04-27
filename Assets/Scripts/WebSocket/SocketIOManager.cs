@@ -14,14 +14,13 @@ public class SocketIOManager : MonoBehaviour
 
     public AVVideoPlayer avVideoPlayer;
     public AVVideoDownloader videoDownloader;
+    public bool isPlay,isRestart,isPause;
     public bool isFirst;
     public GameObject sphere;
-
-    public bool play, restart;
-    public string videoId, packageId;
+   
     void Start()
     {
-        isFirst = false;
+        BoolInitialize();
         // Setup the Socket.IO connection
         var uri = new Uri(serverUrl);
         socket = new SocketIOUnity(uri, new SocketIOOptions
@@ -69,6 +68,13 @@ public class SocketIOManager : MonoBehaviour
 
     }
 
+    public void BoolInitialize()
+    {
+        isFirst = true;
+        isPlay = false;
+        isPause = false;
+        isRestart = false;       
+    }
   
     IEnumerator CheckConnectionTimeout(float timeoutSeconds = 60f)
     {
@@ -93,28 +99,28 @@ public class SocketIOManager : MonoBehaviour
             var jsonObject = JSON.Parse(jsonString);
 
             // Access individual properties
-             play = jsonObject["play"].AsBool;
-             restart = jsonObject["restart"].AsBool;
-             videoId = jsonObject["video_id"].Value;
-             packageId = jsonObject["package_id"].Value;
+             bool play = jsonObject["play"].AsBool;
+             bool restart = jsonObject["restart"].AsBool;
+             string videoId = jsonObject["video_id"].Value;
+             string packageId = jsonObject["package_id"].Value;
             //Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
             if(play && !restart)
             {
                 Debug.Log("played");
-                //sphere.SetActive(true);
-                isFirst = true;
-            }
-            if (!play && restart)
-            {
-                
-                Debug.Log("restarted");
-                avVideoPlayer.RestartVideo();
+                isPlay = true;
+               
             }
             if (!play && !restart)
             {
                 Debug.Log("paused");
-                avVideoPlayer.PauseVideo();
+                isPause = true;
             }
+            if (!play && restart)
+            {               
+                Debug.Log("restarted");
+                isRestart = true;
+            }
+           
        });
 
     }
@@ -126,12 +132,26 @@ public class SocketIOManager : MonoBehaviour
 
     private void Update()
     {
-        if (isFirst)
+        if(isPlay)
         {
-            sphere.SetActive(true);
-            isFirst = false;
-
+            if (isFirst)
+            {
+                avVideoPlayer.StartPlay();
+                isFirst = false;
+            }
+            avVideoPlayer.ResumeVideo();
+            isPlay = false;
         }
+        if (isPause)
+        {
+            avVideoPlayer.PauseVideo();
+            isPause = false;
+        }
+        if (isRestart)
+        {
+            avVideoPlayer.RestartVideo();
+            isRestart = false;
+        }      
     }
 
 }
