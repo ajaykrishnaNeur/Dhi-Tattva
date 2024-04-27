@@ -166,13 +166,31 @@ public class SocketIOManager : MonoBehaviour
             }
             if (isPause)
             {
-                avVideoPlayer.PauseVideo();
-                isPause = false;
+                if (videoId == apiManager.id1)
+                {
+                    avVideoPlayer.PauseVideo();
+                    isPause = false;
+                }
+                else if (videoId == apiManager.id2)
+                {
+                    avVideoPlayer.PauseVideo();
+                    isPause = false;
+                }
+               
             }
             if (isRestart)
             {
-                avVideoPlayer.RestartVideo();
-                isRestart = false;
+                if (videoId == apiManager.id1)
+                {
+                    avVideoPlayer.RestartVideo();
+                    isRestart = false;
+                }
+                else if (videoId == apiManager.id2)
+                {
+                    avVideoPlayer.RestartVideo();
+                    isRestart = false;
+                }
+                
             }
         }
   
