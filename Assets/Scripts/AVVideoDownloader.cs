@@ -22,6 +22,7 @@ public class AVVideoDownloader : MonoBehaviour
     public int i;
     private void Start()
     {
+        Debug.Log(SystemInfo.deviceUniqueIdentifier);
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>(); 
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         for (i = 0; i < apiManager.videoCount; i++)

@@ -984,6 +984,7 @@ MonoBehaviour:
   savePath1: 
   savePath2: 
   isdownload: 0
+  i: 0
 --- !u!4 &176214744
 Transform:
   m_ObjectHideFlags: 0
@@ -6667,8 +6668,13 @@ MonoBehaviour:
   isPlay: 0
   isRestart: 0
   isPause: 0
-  isFirst: 0
+  isVideo1: 0
+  isVideo2: 0
+  isFirst1: 0
+  isFirst2: 0
   sphere: {fileID: 1347820437}
+  packageId: 
+  videoId: 
 --- !u!4 &1583215851
 Transform:
   m_ObjectHideFlags: 0

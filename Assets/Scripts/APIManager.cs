@@ -85,8 +85,9 @@ public class APIManager : MonoBehaviour
                 
             }
             dataHandler.VerifiedPanelActive();
-            Debug.Log("return-1" + jsonResponse);
             VideoDownload.SetActive(true);
+            Debug.Log("return-1" + jsonResponse);
+
         }
     }
 
