@@ -22,7 +22,7 @@ public class AVVideoPlayer : MonoBehaviour
     }
     public void PlayVideo()
     {
-        videoPath = videoDownloader.savePath;
+        videoPath = videoDownloader.savePath1;
 
         if (!mediaPlayer)
         {

@@ -70,7 +70,7 @@ public class APIManager : MonoBehaviour
                      description1 = (string)video["description"];
                      thumbnail1 = (string)video["thumbnail"];
                      id1 = (string)video["id"];
-                    GetVideoName[0] = id1;
+                     GetVideoName[0] = id1;
                 }
                 if (i == 1)
                 {
@@ -80,7 +80,7 @@ public class APIManager : MonoBehaviour
                      description2 = (string)video["description"];
                      thumbnail2 = (string)video["thumbnail"];
                      id2 = (string)video["id"];
-                    GetVideoName[1] = id2;
+                     GetVideoName[1] = id2;
                 }
                 
             }

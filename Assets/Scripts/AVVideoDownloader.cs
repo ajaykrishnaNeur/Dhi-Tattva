@@ -16,32 +16,40 @@ public class AVVideoDownloader : MonoBehaviour
     public APIManager apiManager;
     public DataHandler dataHandler;
     public GameObject socket;
-    public string savePath;
+    public string savePath1, savePath2;
 
     public bool isdownload;
+    public int i;
     private void Start()
     {
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>(); 
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
-        for (int i = 0; i < apiManager.videoCount; i++)
+        for (i = 0; i < apiManager.videoCount; i++)
         {
             StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], apiManager.GetVideoName[i]));
+            if (i == 0)
+            {
+                savePath1 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[i]);
+            }
+            else if (i == 1)
+            {
+                savePath2 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[i]);
+            }
         }
     }
+    
 
     IEnumerator DownloadVideoCoroutine(string videoURL, string videoName )
     {
-         savePath = Path.Combine(Application.persistentDataPath, videoName);
-
         if(isdownload)
         {
-            if (File.Exists(savePath))
+            if (File.Exists(savePath1))
             {
-                Debug.Log("Video already exists locally at: " + savePath);
+                Debug.Log("Video already exists locally at: " + savePath1);
                 //pathText.text = savePath;
                 dataHandler.WelcomePanelActive();
                 socket.SetActive(true);
-                aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
+                //aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
                 yield break; // Exit the coroutine early
             }
         }
@@ -50,7 +58,7 @@ public class AVVideoDownloader : MonoBehaviour
 
         using (UnityWebRequest www = UnityWebRequest.Get(videoURL))
         {
-            www.downloadHandler = new DownloadHandlerFile(savePath);
+            www.downloadHandler = new DownloadHandlerFile(savePath1);
             www.SendWebRequest();
 
             while (!www.isDone)
@@ -73,12 +81,12 @@ public class AVVideoDownloader : MonoBehaviour
             if (www.result == UnityWebRequest.Result.Success)
             {
                 progressSlider.value = 100;
-                Debug.Log("Video downloaded successfully to: " + savePath);
+                Debug.Log("Video downloaded successfully to: " + savePath1);
                 isdownload = true;
                 dataHandler.WelcomePanelActive();
                 socket.SetActive(true);
                 //pathText.text = savePath;
-                aVVideoPlayer.PlayVideo(); // Play the video after downloading
+                //aVVideoPlayer.PlayVideo(); // Play the video after downloading
          }
             else
             {

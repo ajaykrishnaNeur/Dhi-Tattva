@@ -14,10 +14,11 @@ public class SocketIOManager : MonoBehaviour
 
     public AVVideoPlayer avVideoPlayer;
     public AVVideoDownloader videoDownloader;
+    public APIManager apiManager;
     public bool isPlay,isRestart,isPause;
     public bool isFirst;
     public GameObject sphere;
-   
+    public string packageId;
     void Start()
     {
         BoolInitialize();
@@ -102,7 +103,7 @@ public class SocketIOManager : MonoBehaviour
              bool play = jsonObject["play"].AsBool;
              bool restart = jsonObject["restart"].AsBool;
              string videoId = jsonObject["video_id"].Value;
-             string packageId = jsonObject["package_id"].Value;
+             packageId = jsonObject["package_id"].Value;
             //Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
             if(play && !restart)
             {
@@ -132,26 +133,31 @@ public class SocketIOManager : MonoBehaviour
 
     private void Update()
     {
-        if(isPlay)
+        if(apiManager.packageId == packageId)
         {
-            if (isFirst)
+            if (isPlay)
             {
-                avVideoPlayer.StartPlay();
-                isFirst = false;
+                if (isFirst)
+                {
+                    avVideoPlayer.StartPlay();
+                    isFirst = false;
+                }
+                avVideoPlayer.ResumeVideo();
+                isPlay = false;
             }
-            avVideoPlayer.ResumeVideo();
-            isPlay = false;
+            if (isPause)
+            {
+                avVideoPlayer.PauseVideo();
+                isPause = false;
+            }
+            if (isRestart)
+            {
+                avVideoPlayer.RestartVideo();
+                isRestart = false;
+            }
         }
-        if (isPause)
-        {
-            avVideoPlayer.PauseVideo();
-            isPause = false;
-        }
-        if (isRestart)
-        {
-            avVideoPlayer.RestartVideo();
-            isRestart = false;
-        }      
+  
+        
     }
 
 }

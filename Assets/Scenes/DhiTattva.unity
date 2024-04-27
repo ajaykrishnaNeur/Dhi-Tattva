@@ -981,7 +981,8 @@ MonoBehaviour:
   apiManager: {fileID: 1272782185}
   dataHandler: {fileID: 106046041}
   socket: {fileID: 1583215849}
-  savePath: 
+  savePath1: 
+  savePath2: 
   isdownload: 0
 --- !u!4 &176214744
 Transform:
@@ -6662,6 +6663,7 @@ MonoBehaviour:
   serverUrl: ws://43.204.38.188:8001
   avVideoPlayer: {fileID: 1258629146}
   videoDownloader: {fileID: 176214743}
+  apiManager: {fileID: 1272782185}
   isPlay: 0
   isRestart: 0
   isPause: 0
