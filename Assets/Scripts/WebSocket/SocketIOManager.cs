@@ -17,7 +17,7 @@ public class SocketIOManager : MonoBehaviour
     public APIManager apiManager;
     public bool isPlay,isRestart,isPause;
     public bool isVideo1, isVideo2;
-    public bool isFirst;
+    public bool isFirst1,isFirst2;
     public GameObject sphere;
     public string packageId,videoId;
     void Start()
@@ -72,7 +72,8 @@ public class SocketIOManager : MonoBehaviour
 
     public void BoolInitialize()
     {
-        isFirst = true;
+        isFirst1 = true;
+        isFirst2 = true;
         isPlay = false;
         isPause = false;
         isRestart = false;
@@ -108,8 +109,19 @@ public class SocketIOManager : MonoBehaviour
              videoId = jsonObject["video_id"].Value;
              packageId = jsonObject["package_id"].Value;
             Debug.Log("idd : "+videoId);
+
+            //if (videoId == apiManager.id1)
+            //{
+            //    isVideo1 = true;
+            //    isVideo2 = false;
+            //}
+            //if (videoId == apiManager.id2)
+            //{
+            //    isVideo1 = false;
+            //    isVideo2 = true;
+            //}
             //Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
-            if(play && !restart)
+            if (play && !restart)
             {
                 Debug.Log("played");
                 isPlay = true;
@@ -125,8 +137,8 @@ public class SocketIOManager : MonoBehaviour
                 Debug.Log("restarted");
                 isRestart = true;
             }
-           
-       });
+
+        });
 
     }
     void OnDestroy()
@@ -143,11 +155,10 @@ public class SocketIOManager : MonoBehaviour
             {
                 if(videoId == apiManager.id1)
                 {
-                    if (isFirst)
+                    if (isFirst1)
                     {
-                        avVideoPlayer.StartPlay();
-                      
-                        isFirst = false;
+                        avVideoPlayer.StartPlay();                     
+                        isFirst1 = false;
                     }
                     avVideoPlayer.videoPath = videoDownloader.savePath1;
                     isVideo1 = true;
@@ -158,10 +169,10 @@ public class SocketIOManager : MonoBehaviour
                 }
                 else if(videoId == apiManager.id2)
                 {
-                    if (isFirst)
+                    if (isFirst2)
                     {
                         avVideoPlayer.StartPlay();
-                        isFirst = false;
+                        isFirst2 = false;
                     }
                     avVideoPlayer.videoPath = videoDownloader.savePath2;
                     isVideo1 = false;
@@ -174,32 +185,16 @@ public class SocketIOManager : MonoBehaviour
             }
             if (isPause)
             {
-                if (videoId == apiManager.id1)
+                if (videoId == apiManager.id1 && isVideo1)
+                {
+                    avVideoPlayer.PauseVideo();                   
+                }
+                else if (videoId == apiManager.id2 && isVideo2)
                 {
                     avVideoPlayer.PauseVideo();
-                    isPause = false;
                 }
-                else if (videoId == apiManager.id2)
-                {
-                    avVideoPlayer.PauseVideo();
-                    isPause = false;
-                }
-               
+                isPause = false;
             }
-            //if (isRestart)
-            //{
-            //    if (videoId == apiManager.id1)
-            //    {
-            //        avVideoPlayer.RestartVideo();
-            //        isRestart = false;
-            //    }
-            //    else if (videoId == apiManager.id2)
-            //    {
-            //        avVideoPlayer.RestartVideo();
-            //        isRestart = false;
-            //    }
-                
-            //}
 
             if (isRestart)
             {
