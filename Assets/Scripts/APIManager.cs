@@ -16,6 +16,7 @@ public class APIManager : MonoBehaviour
     [SerializeField]
     public int videoCount;
 
+    public GameObject VideoDownload;
     public string[] GetVideoURL = new string[10], GetVideoName = new string[10];
     [SerializeField]
     public string id1, thumbnail1,description1,title1,urlvideo1;
@@ -85,6 +86,7 @@ public class APIManager : MonoBehaviour
             }
                 dataHandler.VerifiedPanelActive();
             Debug.Log("return-1" + jsonResponse);
+            VideoDownload.SetActive(true);
         }
     }
 
@@ -117,11 +119,12 @@ public class APIManager : MonoBehaviour
         if (req.downloadHandler.text.Contains("Device already paired"))
         {           
             dataHandler.VerifiedPanelActive();
+            VideoDownload.SetActive(true);
         }
         if (req.downloadHandler.text.Contains(SystemInfo.deviceUniqueIdentifier))
         {
             dataHandler.VerifiedPanelActive();
-
+            VideoDownload.SetActive(true);
         }
     }
 }

@@ -11,6 +11,7 @@ public class DataHandler : MonoBehaviour
     public GameObject verificationPanel;
     public GameObject AdminPanel;
     public GameObject incorrectCodeText;
+    public GameObject Ground;
     public TMP_InputField code_Inputfield;
     private APIManager apiManager;
 
@@ -44,6 +45,11 @@ public class DataHandler : MonoBehaviour
     {
         verificationPanel.SetActive(false);
         welcomePanel.SetActive(true);
+    }
+    public void WelcomePanelDisable()
+    {
+        welcomePanel.SetActive(false);
+        Ground.SetActive(false);
     }
     public void WrongCredentialPanelActive()
     {

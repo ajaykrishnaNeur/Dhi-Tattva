@@ -2873,7 +2873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &825564176
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4399,7 +4399,7 @@ RectTransform:
   m_Father: {fileID: 1454873435}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5220,6 +5220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeApi: http://43.204.38.188:8000/v1/packages/active_package
   videoCount: 0
+  VideoDownload: {fileID: 176214742}
   GetVideoURL:
   - 
   - 
@@ -6658,6 +6659,9 @@ MonoBehaviour:
   serverUrl: ws://43.204.38.188:8001
   avVideoPlayer: {fileID: 1258629146}
   videoDownloader: {fileID: 176214743}
+  isPlay: 0
+  isRestart: 0
+  isPause: 0
   isFirst: 0
   sphere: {fileID: 1347820437}
 --- !u!4 &1583215851
@@ -7002,7 +7006,7 @@ RectTransform:
   m_Father: {fileID: 1026059592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
