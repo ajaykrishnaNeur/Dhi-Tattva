@@ -18,7 +18,7 @@ public class SocketIOManager : MonoBehaviour
     public bool isPlay,isRestart,isPause;
     public bool isFirst;
     public GameObject sphere;
-    public string packageId;
+    public string packageId,videoId;
     void Start()
     {
         BoolInitialize();
@@ -102,7 +102,7 @@ public class SocketIOManager : MonoBehaviour
             // Access individual properties
              bool play = jsonObject["play"].AsBool;
              bool restart = jsonObject["restart"].AsBool;
-             string videoId = jsonObject["video_id"].Value;
+             videoId = jsonObject["video_id"].Value;
              packageId = jsonObject["package_id"].Value;
             //Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
             if(play && !restart)
@@ -137,13 +137,31 @@ public class SocketIOManager : MonoBehaviour
         {
             if (isPlay)
             {
-                if (isFirst)
+                if(videoId == apiManager.id1)
                 {
-                    avVideoPlayer.StartPlay();
-                    isFirst = false;
+                    if (isFirst)
+                    {
+                        avVideoPlayer.StartPlay();
+                        isFirst = false;
+                    }
+                    avVideoPlayer.videoPath = videoDownloader.savePath1;
+                    avVideoPlayer.PlayVideo();
+                    avVideoPlayer.ResumeVideo();
+                    isPlay = false;
                 }
-                avVideoPlayer.ResumeVideo();
-                isPlay = false;
+                else if(videoId == apiManager.id2)
+                {
+                    if (isFirst)
+                    {
+                        avVideoPlayer.StartPlay();
+                        isFirst = false;
+                    }
+                    avVideoPlayer.videoPath = videoDownloader.savePath2;
+                    avVideoPlayer.PlayVideo();
+                    avVideoPlayer.ResumeVideo();
+                    isPlay = false;
+                }
+               
             }
             if (isPause)
             {

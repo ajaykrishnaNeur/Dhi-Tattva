@@ -26,15 +26,10 @@ public class AVVideoDownloader : MonoBehaviour
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         for (i = 0; i < apiManager.videoCount; i++)
         {
+            savePath1 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[0]);
+            savePath2 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[1]);
             StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], apiManager.GetVideoName[i]));
-            if (i == 0)
-            {
-                savePath1 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[i]);
-            }
-            else if (i == 1)
-            {
-                savePath2 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[i]);
-            }
+           
         }
     }
     
@@ -43,22 +38,45 @@ public class AVVideoDownloader : MonoBehaviour
     {
         if(isdownload)
         {
-            if (File.Exists(savePath1))
+            if (i == 0)
             {
-                Debug.Log("Video already exists locally at: " + savePath1);
-                //pathText.text = savePath;
-                dataHandler.WelcomePanelActive();
-                socket.SetActive(true);
-                //aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
-                yield break; // Exit the coroutine early
+                if (File.Exists(savePath1))
+                {
+                    Debug.Log("Video already exists locally at: " + savePath1);
+                    //pathText.text = savePath;
+                    dataHandler.WelcomePanelActive();
+                    socket.SetActive(true);
+                    //aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
+                    yield break; // Exit the coroutine early
+                }
             }
+            if (i == 1)
+            {
+                if (File.Exists(savePath2))
+                {
+                    Debug.Log("Video already exists locally at: " + savePath2);
+                    //pathText.text = savePath;
+                    dataHandler.WelcomePanelActive();
+                    socket.SetActive(true);
+                    //aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
+                    yield break; // Exit the coroutine early
+                }
+            }
+           
         }
         // Check if the video file already exists locally
 
 
         using (UnityWebRequest www = UnityWebRequest.Get(videoURL))
         {
-            www.downloadHandler = new DownloadHandlerFile(savePath1);
+            if (i == 0)
+            {
+                www.downloadHandler = new DownloadHandlerFile(savePath1);
+            }
+            if (i == 1)
+            {
+                www.downloadHandler = new DownloadHandlerFile(savePath2);
+            }
             www.SendWebRequest();
 
             while (!www.isDone)

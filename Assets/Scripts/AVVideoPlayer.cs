@@ -22,7 +22,6 @@ public class AVVideoPlayer : MonoBehaviour
     }
     public void PlayVideo()
     {
-        videoPath = videoDownloader.savePath1;
 
         if (!mediaPlayer)
         {
@@ -31,8 +30,6 @@ public class AVVideoPlayer : MonoBehaviour
         }
 
         string fullPath = Path.Combine(Application.persistentDataPath, videoPath);
-        
-        MediaPath mediaPath = new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL);
         bool isOpening = mediaPlayer.OpenMedia(new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL));
         if (!isOpening)
         {
