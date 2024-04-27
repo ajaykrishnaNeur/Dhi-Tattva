@@ -16,6 +16,7 @@ public class SocketIOManager : MonoBehaviour
     public AVVideoDownloader videoDownloader;
     public APIManager apiManager;
     public bool isPlay,isRestart,isPause;
+    public bool isVideo1, isVideo2;
     public bool isFirst;
     public GameObject sphere;
     public string packageId,videoId;
@@ -74,7 +75,9 @@ public class SocketIOManager : MonoBehaviour
         isFirst = true;
         isPlay = false;
         isPause = false;
-        isRestart = false;       
+        isRestart = false;
+        isVideo2 = false;
+        isVideo1 = false;
     }
   
     IEnumerator CheckConnectionTimeout(float timeoutSeconds = 60f)
@@ -104,6 +107,7 @@ public class SocketIOManager : MonoBehaviour
              bool restart = jsonObject["restart"].AsBool;
              videoId = jsonObject["video_id"].Value;
              packageId = jsonObject["package_id"].Value;
+            Debug.Log("idd : "+videoId);
             //Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
             if(play && !restart)
             {
@@ -146,6 +150,8 @@ public class SocketIOManager : MonoBehaviour
                         isFirst = false;
                     }
                     avVideoPlayer.videoPath = videoDownloader.savePath1;
+                    isVideo1 = true;
+                    isVideo2 = false;
                     avVideoPlayer.PlayVideo();
                     avVideoPlayer.ResumeVideo();
                     isPlay = false;
@@ -158,6 +164,8 @@ public class SocketIOManager : MonoBehaviour
                         isFirst = false;
                     }
                     avVideoPlayer.videoPath = videoDownloader.savePath2;
+                    isVideo1 = false;
+                    isVideo2 = true;
                     avVideoPlayer.PlayVideo();
                     avVideoPlayer.ResumeVideo();
                     isPlay = false;
@@ -178,19 +186,32 @@ public class SocketIOManager : MonoBehaviour
                 }
                
             }
+            //if (isRestart)
+            //{
+            //    if (videoId == apiManager.id1)
+            //    {
+            //        avVideoPlayer.RestartVideo();
+            //        isRestart = false;
+            //    }
+            //    else if (videoId == apiManager.id2)
+            //    {
+            //        avVideoPlayer.RestartVideo();
+            //        isRestart = false;
+            //    }
+                
+            //}
+
             if (isRestart)
             {
-                if (videoId == apiManager.id1)
+                if (videoId == apiManager.id1 && isVideo1)
                 {
                     avVideoPlayer.RestartVideo();
-                    isRestart = false;
                 }
-                else if (videoId == apiManager.id2)
+                else if (videoId == apiManager.id2 && isVideo2)
                 {
-                    avVideoPlayer.RestartVideo();
-                    isRestart = false;
+                    avVideoPlayer.RestartVideo();                    
                 }
-                
+                isRestart = false;
             }
         }
   
