@@ -142,6 +142,7 @@ public class SocketIOManager : MonoBehaviour
                     if (isFirst)
                     {
                         avVideoPlayer.StartPlay();
+                      
                         isFirst = false;
                     }
                     avVideoPlayer.videoPath = videoDownloader.savePath1;
