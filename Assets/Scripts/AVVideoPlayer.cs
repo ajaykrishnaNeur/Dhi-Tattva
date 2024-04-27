@@ -13,7 +13,6 @@ public class AVVideoPlayer : MonoBehaviour
     private DataHandler dataHandler;
 
     public string videoPath;
-
     public GameObject sphere;
     private void Start()
     {

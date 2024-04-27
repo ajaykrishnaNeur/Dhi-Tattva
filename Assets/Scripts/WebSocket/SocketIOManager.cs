@@ -157,13 +157,14 @@ public class SocketIOManager : MonoBehaviour
                 {
                     if (isFirst1)
                     {
-                        avVideoPlayer.StartPlay();                     
+                        avVideoPlayer.videoPath = videoDownloader.savePath1;
+                        avVideoPlayer.StartPlay();
+                        avVideoPlayer.PlayVideo();
                         isFirst1 = false;
-                    }
-                    avVideoPlayer.videoPath = videoDownloader.savePath1;
+                        isFirst2 = true;
+                    }                    
                     isVideo1 = true;
                     isVideo2 = false;
-                    avVideoPlayer.PlayVideo();
                     avVideoPlayer.ResumeVideo();
                     isPlay = false;
                 }
@@ -171,13 +172,14 @@ public class SocketIOManager : MonoBehaviour
                 {
                     if (isFirst2)
                     {
+                        avVideoPlayer.videoPath = videoDownloader.savePath2;
                         avVideoPlayer.StartPlay();
+                        avVideoPlayer.PlayVideo();
+                        isFirst1 = true;
                         isFirst2 = false;
-                    }
-                    avVideoPlayer.videoPath = videoDownloader.savePath2;
+                    }                  
                     isVideo1 = false;
                     isVideo2 = true;
-                    avVideoPlayer.PlayVideo();
                     avVideoPlayer.ResumeVideo();
                     isPlay = false;
                 }
