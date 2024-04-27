@@ -17,67 +17,63 @@ public class AVVideoDownloader : MonoBehaviour
     public DataHandler dataHandler;
     public GameObject socket;
     public string savePath1, savePath2;
+    private bool video1Downloaded = false;
+    private bool video2Downloaded = false;
 
-    public bool isdownload;
-    public int i;
     private void Start()
     {
         Debug.Log(SystemInfo.deviceUniqueIdentifier);
-        apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>(); 
+        apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
-        for (i = 0; i < apiManager.videoCount; i++)
+        for (int i = 0; i < apiManager.videoCount; i++)
         {
-            savePath1 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[0]);
-            savePath2 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[1]);
-            StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], apiManager.GetVideoName[i]));
-           
+            // Construct save paths for videos
+            string videoName = apiManager.GetVideoName[i];
+
+            // Skip if video name is null or empty
+            if (string.IsNullOrEmpty(videoName))
+            {
+                Debug.LogError("Invalid video name for index " + i);
+                continue;
+            }
+
+            string savePath = Path.Combine(Application.persistentDataPath, videoName);
+
+            // Check if the video file already exists locally
+            if (File.Exists(savePath))
+            {
+                Debug.Log("Video already exists locally at: " + savePath);
+
+                // Check if the video is fully downloaded
+                if (PlayerPrefs.GetInt(videoName, 0) == 1)
+                {
+                    Debug.Log("Video is fully downloaded: " + videoName);
+                    UpdateVideoStatus(i);
+                }
+            }
+            else
+            {
+                // If the video doesn't exist locally, start downloading
+                StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], videoName, i));
+            }
+        }
+
+        // Check if both videos are downloaded
+        if (video1Downloaded && video2Downloaded)
+        {
+            // If both videos are downloaded, activate the welcome panel and socket
+            dataHandler.WelcomePanelActive();
+            socket.SetActive(true);
         }
     }
-    
 
-    IEnumerator DownloadVideoCoroutine(string videoURL, string videoName )
+    IEnumerator DownloadVideoCoroutine(string videoURL, string videoName, int videoIndex)
     {
-        if(isdownload)
-        {
-            if (i == 0)
-            {
-                if (File.Exists(savePath1))
-                {
-                    Debug.Log("Video already exists locally at: " + savePath1);
-                    //pathText.text = savePath;
-                    dataHandler.WelcomePanelActive();
-                    socket.SetActive(true);
-                    //aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
-                    yield break; // Exit the coroutine early
-                }
-            }
-            if (i == 1)
-            {
-                if (File.Exists(savePath2))
-                {
-                    Debug.Log("Video already exists locally at: " + savePath2);
-                    //pathText.text = savePath;
-                    dataHandler.WelcomePanelActive();
-                    socket.SetActive(true);
-                    //aVVideoPlayer.PlayVideo(); // Assuming you want to play the video if it already exists
-                    yield break; // Exit the coroutine early
-                }
-            }
-           
-        }
-        // Check if the video file already exists locally
-
+        string savePath = Path.Combine(Application.persistentDataPath, videoName);
 
         using (UnityWebRequest www = UnityWebRequest.Get(videoURL))
         {
-            if (i == 0)
-            {
-                www.downloadHandler = new DownloadHandlerFile(savePath1);
-            }
-            if (i == 1)
-            {
-                www.downloadHandler = new DownloadHandlerFile(savePath2);
-            }
+            www.downloadHandler = new DownloadHandlerFile(savePath);
             www.SendWebRequest();
 
             while (!www.isDone)
@@ -100,13 +96,14 @@ public class AVVideoDownloader : MonoBehaviour
             if (www.result == UnityWebRequest.Result.Success)
             {
                 progressSlider.value = 100;
-                Debug.Log("Video downloaded successfully to: " + savePath1);
-                isdownload = true;
-                dataHandler.WelcomePanelActive();
-                socket.SetActive(true);
-                //pathText.text = savePath;
-                //aVVideoPlayer.PlayVideo(); // Play the video after downloading
-         }
+                Debug.Log("Video downloaded successfully to: " + savePath);
+
+                // Mark the video as fully downloaded
+                PlayerPrefs.SetInt(videoName, 1);
+                PlayerPrefs.Save();
+
+                UpdateVideoStatus(videoIndex);
+            }
             else
             {
                 Debug.Log("Error downloading video: " + www.error);
@@ -114,5 +111,25 @@ public class AVVideoDownloader : MonoBehaviour
         }
     }
 
- 
+    // Update the download status of the video and check if both videos are downloaded
+    private void UpdateVideoStatus(int videoIndex)
+    {
+        if (videoIndex == 0)
+        {
+            video1Downloaded = true;
+        }
+        else if (videoIndex == 1)
+        {
+            video2Downloaded = true;
+        }
+
+        // Check if both videos are downloaded
+        if (video1Downloaded && video2Downloaded)
+        {
+            // If both videos are downloaded, activate the welcome panel and socket
+            dataHandler.WelcomePanelActive();
+            socket.SetActive(true);
+        }
+    }
+
 }
