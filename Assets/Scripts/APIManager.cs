@@ -66,25 +66,25 @@ public class APIManager : MonoBehaviour
                 {
                      urlvideo1 = (string)video["url"];
                      GetVideoURL[0] = urlvideo1;
-                     title1 = (string)video["title"];
-                     GetVideoName[0] = title1;
+                     title1 = (string)video["title"];                    
                      description1 = (string)video["description"];
                      thumbnail1 = (string)video["thumbnail"];
                      id1 = (string)video["id"];
+                    GetVideoName[0] = id1;
                 }
                 if (i == 1)
                 {
                      urlvideo2 = (string)video["url"];
                      GetVideoURL[1] = urlvideo2;
                      title2 = (string)video["title"];
-                     GetVideoName[1] = title2;
                      description2 = (string)video["description"];
                      thumbnail2 = (string)video["thumbnail"];
                      id2 = (string)video["id"];
+                    GetVideoName[1] = id2;
                 }
                 
             }
-                dataHandler.VerifiedPanelActive();
+            dataHandler.VerifiedPanelActive();
             Debug.Log("return-1" + jsonResponse);
             VideoDownload.SetActive(true);
         }
