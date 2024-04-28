@@ -26,6 +26,7 @@ public class APIManager : MonoBehaviour
     public string packageId;
     void Start()
     {
+        //deviceId = "7";
         deviceId = SystemInfo.deviceUniqueIdentifier;
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
@@ -101,6 +102,7 @@ public class APIManager : MonoBehaviour
         req.SetRequestHeader("Content-Type", "application/json");
 
         yield return req.SendWebRequest();
+        StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
         if (req.isNetworkError) // error in request
         {
             Debug.Log("Error While Sending: " + req.error);
