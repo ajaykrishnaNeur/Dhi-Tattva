@@ -36,20 +36,16 @@ public class AVVideoDownloader : MonoBehaviour
                 Debug.LogError("Invalid video name for index " + i);
                 continue;
             }
-
+            savePath1 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[0]);
+            savePath2 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[1]);
             string savePath = Path.Combine(Application.persistentDataPath, videoName);
 
             // Check if the video file already exists locally
-            if (File.Exists(savePath))
+            if (PlayerPrefs.GetInt(videoName, 0) == 1 && File.Exists(savePath1) && File.Exists(savePath2))
             {
-                Debug.Log("Video already exists locally at: " + savePath);
 
-                // Check if the video is fully downloaded
-                if (PlayerPrefs.GetInt(videoName, 0) == 1)
-                {
-                    Debug.Log("Video is fully downloaded: " + videoName);
+                    Debug.Log("Video is fully downloaded: " + videoName); 
                     UpdateVideoStatus(i);
-                }
             }
             else
             {

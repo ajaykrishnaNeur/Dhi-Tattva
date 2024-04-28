@@ -983,8 +983,6 @@ MonoBehaviour:
   socket: {fileID: 1583215849}
   savePath1: 
   savePath2: 
-  isdownload: 0
-  i: 0
 --- !u!4 &176214744
 Transform:
   m_ObjectHideFlags: 0
