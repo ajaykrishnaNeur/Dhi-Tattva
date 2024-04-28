@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class DataHandler : MonoBehaviour
 {
-    public GameObject welcomePanel,Numpad,submitBtn;
+    public GameObject welcomePanel,Numpad,submitBtn,submitBtnVisual;
     public GameObject verificationPanel;
     public GameObject AdminPanel;
     public GameObject incorrectCodeText;
@@ -37,7 +37,7 @@ public class DataHandler : MonoBehaviour
     {
         AdminPanel.SetActive(false);
         Numpad.SetActive(false);
-        submitBtn.SetActive(false);
+        submitBtnVisual.SetActive(false);
         verificationPanel.SetActive(true);
     }
 
@@ -61,8 +61,8 @@ public class DataHandler : MonoBehaviour
     {
         LoginCode loginCode = new LoginCode()
         {
-            //DeviceId = "7",
-            DeviceId = SystemInfo.deviceUniqueIdentifier,
+            DeviceId = "8",
+            //DeviceId = SystemInfo.deviceUniqueIdentifier,
             code = code_Inputfield.text,
         };
 

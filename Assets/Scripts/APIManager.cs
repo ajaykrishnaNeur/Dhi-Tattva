@@ -24,10 +24,11 @@ public class APIManager : MonoBehaviour
     public string id2, thumbnail2, description2, title2, urlvideo2;
     [SerializeField]
     public string packageId;
+    public GameObject testcube;
     void Start()
     {
-        //deviceId = "7";
-        deviceId = SystemInfo.deviceUniqueIdentifier;
+        deviceId = "8";
+        //deviceId = SystemInfo.deviceUniqueIdentifier;
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
     }
@@ -51,7 +52,7 @@ public class APIManager : MonoBehaviour
         else
         {
             Debug.Log("Request successful!");
-
+            testcube.SetActive(false);
             string jsonResponse = request.downloadHandler.text;
             JObject jsonObject = JObject.Parse(jsonResponse);
             packageId = (string)jsonObject["activePackage"]["id"]; 
