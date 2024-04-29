@@ -43,18 +43,13 @@ public class AVVideoPlayer : MonoBehaviour
             Debug.LogError("No MediaPlayer assigned!");
             return;
         }
-        double time = mediaPlayer.Control.GetCurrentTime();
-      
-
-
-    TimeRanges seekRanges = mediaPlayer.Control.GetSeekableTimes();
-        double fullduration = mediaPlayer.Info.GetDuration();
-        Debug.LogError("videolength: " + fullduration/60);
         string fullPath = Path.Combine(Application.persistentDataPath, videoPath);
         bool isOpening = mediaPlayer.OpenMedia(new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL));
+
         double videoDuration = mediaPlayer.Info.GetDuration();
         double endTime = videoDuration;
         Debug.LogError("duration:" + endTime);
+
         if (!isOpening)
         {
             Debug.LogError("Failed to open video: " + fullPath);
