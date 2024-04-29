@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Video;
 using RenderHeads.Media.AVProVideo;
+using static DataHandler;
 public class AVVideoPlayer : MonoBehaviour
 {
     public MediaPlayer mediaPlayer;
@@ -12,6 +13,13 @@ public class AVVideoPlayer : MonoBehaviour
 
     public string videoPath;
     public GameObject sphere;
+
+    public class VideoCountAdd
+    {
+        public string videoId;
+        public string adminId;
+        public int count;
+    }
     private void Start()
     {
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
@@ -49,13 +57,24 @@ public class AVVideoPlayer : MonoBehaviour
         mediaPlayer.Play();
     }
 
-    public void StartPlay() 
+    public void StartPlay()
     {
         sphere.SetActive(true);
         RestartVideo();
         ResumeVideo();
         dataHandler.WelcomePanelDisable();
+        VideoCount();
+    }
+
+    public void VideoCount()
+    {
+        LoginCode loginCode = new LoginCode()
+        {
+
+        };
+
+        //string jsonData = JsonConvert.SerializeObject(loginCode);
+        //apiManager.StartCoroutine(VideoCountPostRequest("http://43.204.38.188:8000/v1/devices/register", jsonData));
     }
 }
-
 
