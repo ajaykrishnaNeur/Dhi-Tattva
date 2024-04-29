@@ -46,9 +46,18 @@ public class APIManager : MonoBehaviour
         // Check for errors
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError("Error posting request: " + request.error);
-            dataHandler.LoginPanelActive();
+            if (request.downloadHandler.text.Contains("No active packages found."))
+            {
+                dataHandler.LoginPanelActive();
+            }
+            else
+            {
+                Debug.LogError("Error posting request: " + request.error);
+                dataHandler.LoginPanelActive();
+            }
+
         }
+
         else
         {
             Debug.Log("Request successful!");
@@ -103,7 +112,7 @@ public class APIManager : MonoBehaviour
         req.SetRequestHeader("Content-Type", "application/json");
 
         yield return req.SendWebRequest();
-        StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
+       
         if (req.isNetworkError) // error in request
         {
             Debug.Log("Error While Sending: " + req.error);
@@ -120,15 +129,14 @@ public class APIManager : MonoBehaviour
             //INCORRECT CODE    
             dataHandler.WrongCredentialPanelActive();
         }
+
         if (req.downloadHandler.text.Contains("Device already paired"))
-        {           
-            dataHandler.VerifiedPanelActive();
-            VideoDownload.SetActive(true);
+        {
+            StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
         }
         if (req.downloadHandler.text.Contains(SystemInfo.deviceUniqueIdentifier))
         {
-            dataHandler.VerifiedPanelActive();
-            VideoDownload.SetActive(true);
+            StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
         }
     }
 }
