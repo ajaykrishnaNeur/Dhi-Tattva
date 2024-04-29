@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Video;
 using RenderHeads.Media.AVProVideo;
@@ -18,7 +19,14 @@ public class AVVideoPlayer : MonoBehaviour
     {
         public string videoId;
         public string adminId;
-        public int count;
+        public string count;
+    }
+
+    public class PackageCountAdd
+    {
+        public string packageId;
+        public string adminId;
+        public string count;
     }
     private void Start()
     {
@@ -68,13 +76,30 @@ public class AVVideoPlayer : MonoBehaviour
 
     public void VideoCount()
     {
-        LoginCode loginCode = new LoginCode()
+        VideoCountAdd videoCountAdd = new VideoCountAdd()
         {
+            videoId = "662b925da7cc1803b45f08a2",
+            adminId = "662f6104cb488c1bf137a4c6",
+            count = "1"
 
         };
 
-        //string jsonData = JsonConvert.SerializeObject(loginCode);
-        //apiManager.StartCoroutine(VideoCountPostRequest("http://43.204.38.188:8000/v1/devices/register", jsonData));
+        string jsonData = JsonConvert.SerializeObject(videoCountAdd);
+        apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
+    }
+
+    public void PackageCount()
+    {
+        PackageCountAdd packageCountAdd = new PackageCountAdd()
+        {
+            packageId = "662b92f3a7cc1803b45f08bc",
+            adminId = "662f6104cb488c1bf137a4c6",
+            count = "1"
+
+        };
+
+        string jsonData = JsonConvert.SerializeObject(packageCountAdd);
+        apiManager.StartCoroutine(apiManager.PackageCountPostRequest("http://43.204.38.188:8000/v1/package-counts", jsonData));
     }
 }
 

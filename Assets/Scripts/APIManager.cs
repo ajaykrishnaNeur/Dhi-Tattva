@@ -164,4 +164,29 @@ public class APIManager : MonoBehaviour
         }
        
     }
+
+    public IEnumerator PackageCountPostRequest(string url, string jsonData)
+    {
+        var req = new UnityWebRequest(url, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(jsonData);
+        req.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+
+        req.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        req.SetRequestHeader("Content-Type", "application/json");
+
+        yield return req.SendWebRequest();
+
+        if (req.isNetworkError) // error in request
+        {
+            Debug.Log("Error While Sending: " + req.error);
+        }
+        else // done
+        {
+
+            Debug.Log("return" + req.downloadHandler.text);
+            string value = req.downloadHandler.text;
+
+        }
+
+    }
 }
