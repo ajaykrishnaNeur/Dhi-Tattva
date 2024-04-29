@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Video;
 using RenderHeads.Media.AVProVideo;
 using static DataHandler;
+
 public class AVVideoPlayer : MonoBehaviour
 {
     public MediaPlayer mediaPlayer;
@@ -14,7 +15,6 @@ public class AVVideoPlayer : MonoBehaviour
 
     public string videoPath;
     public GameObject sphere;
-
     public class VideoCountAdd
     {
         public string videoId;
@@ -33,23 +33,36 @@ public class AVVideoPlayer : MonoBehaviour
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
     }
+
     public void PlayVideo()
     {
+       
 
         if (!mediaPlayer)
         {
             Debug.LogError("No MediaPlayer assigned!");
             return;
         }
+        double time = mediaPlayer.Control.GetCurrentTime();
+      
 
+
+    TimeRanges seekRanges = mediaPlayer.Control.GetSeekableTimes();
+        double fullduration = mediaPlayer.Info.GetDuration();
+        Debug.LogError("videolength: " + fullduration/60);
         string fullPath = Path.Combine(Application.persistentDataPath, videoPath);
         bool isOpening = mediaPlayer.OpenMedia(new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL));
+        double videoDuration = mediaPlayer.Info.GetDuration();
+        double endTime = videoDuration;
+        Debug.LogError("duration:" + endTime);
         if (!isOpening)
         {
             Debug.LogError("Failed to open video: " + fullPath);
         }
-    }
 
+        
+    }
+    
     public void PauseVideo()
     {
         mediaPlayer.Play();
@@ -71,7 +84,6 @@ public class AVVideoPlayer : MonoBehaviour
         RestartVideo();
         ResumeVideo();
         dataHandler.WelcomePanelDisable();
-        VideoCount();
     }
 
     public void VideoCount()
@@ -101,5 +113,6 @@ public class AVVideoPlayer : MonoBehaviour
         string jsonData = JsonConvert.SerializeObject(packageCountAdd);
         apiManager.StartCoroutine(apiManager.PackageCountPostRequest("http://43.204.38.188:8000/v1/package-counts", jsonData));
     }
+
 }
 
