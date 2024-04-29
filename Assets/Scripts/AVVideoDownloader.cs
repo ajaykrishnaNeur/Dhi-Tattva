@@ -19,9 +19,10 @@ public class AVVideoDownloader : MonoBehaviour
     public string savePath1, savePath2;
     private bool video1Downloaded = false;
     private bool video2Downloaded = false;
-
+    public int video2;
     private void Start()
     {
+        video2 = 0;
         Debug.Log(SystemInfo.deviceUniqueIdentifier);
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
@@ -38,7 +39,7 @@ public class AVVideoDownloader : MonoBehaviour
             }
             savePath1 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[0]);
             savePath2 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[1]);
-            string savePath = Path.Combine(Application.persistentDataPath, videoName);
+            //string savePath = Path.Combine(Application.persistentDataPath, videoName);
 
             // Check if the video file already exists locally
             if (PlayerPrefs.GetInt(videoName, 0) == 1 && File.Exists(savePath1) && File.Exists(savePath2))
@@ -74,30 +75,27 @@ public class AVVideoDownloader : MonoBehaviour
 
             while (!www.isDone)
             {
-                // Update progress
-                if (progressSlider != null)
-                {
-                    // Scale www.downloadProgress from 0-1 to 0-100
-                    int scaledProgress = (int)(www.downloadProgress * 100);
+                    if (progressSlider != null)
+                    {
+                        // Scale www.downloadProgress from 0-1 to 0-100
+                        int scaledProgress = (int)(www.downloadProgress * 100 /2 + video2);
 
-                    // Assign the scaled progress value to progressSlider
-                    progressSlider.value = scaledProgress;
+                        // Assign the scaled progress value to progressSlider
+                        progressSlider.value = scaledProgress;
 
-                    // Update slidervalue text
-                    slidervalue.text = scaledProgress.ToString();
-                }
-                yield return null;
+                        // Update slidervalue text
+                        slidervalue.text = scaledProgress.ToString();
+                    }
+                    yield return null;
+
             }
 
             if (www.result == UnityWebRequest.Result.Success)
             {
                 progressSlider.value = 100;
                 Debug.Log("Video downloaded successfully to: " + savePath);
-
-                // Mark the video as fully downloaded
                 PlayerPrefs.SetInt(videoName, 1);
                 PlayerPrefs.Save();
-
                 UpdateVideoStatus(videoIndex);
             }
             else
@@ -117,11 +115,13 @@ public class AVVideoDownloader : MonoBehaviour
         else if (videoIndex == 1)
         {
             video2Downloaded = true;
+            //video2 = 50;
         }
 
         // Check if both videos are downloaded
         if (video1Downloaded && video2Downloaded)
         {
+
             // If both videos are downloaded, activate the welcome panel and socket
             dataHandler.WelcomePanelActive();
             socket.SetActive(true);

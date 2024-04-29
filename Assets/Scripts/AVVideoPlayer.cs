@@ -6,9 +6,7 @@ using UnityEngine.Video;
 using RenderHeads.Media.AVProVideo;
 public class AVVideoPlayer : MonoBehaviour
 {
-    //public string videoFileName;
     public MediaPlayer mediaPlayer;
-    public AVVideoDownloader videoDownloader;
     private APIManager apiManager;
     private DataHandler dataHandler;
 

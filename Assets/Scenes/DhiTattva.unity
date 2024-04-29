@@ -984,6 +984,7 @@ MonoBehaviour:
   socket: {fileID: 1583215849}
   savePath1: 
   savePath2: 
+  video2: 0
 --- !u!4 &176214744
 Transform:
   m_ObjectHideFlags: 0
@@ -1150,7 +1151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &238904047
 BoxCollider:
   m_ObjectHideFlags: 0

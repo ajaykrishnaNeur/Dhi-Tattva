@@ -27,8 +27,8 @@ public class APIManager : MonoBehaviour
     public GameObject testcube;
     void Start()
     {
-        deviceId = "8";
-        //deviceId = SystemInfo.deviceUniqueIdentifier;
+        //deviceId = "8";
+        deviceId = SystemInfo.deviceUniqueIdentifier;
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
     }

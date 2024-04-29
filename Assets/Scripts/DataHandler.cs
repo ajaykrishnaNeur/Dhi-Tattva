@@ -61,8 +61,8 @@ public class DataHandler : MonoBehaviour
     {
         LoginCode loginCode = new LoginCode()
         {
-            DeviceId = "8",
-            //DeviceId = SystemInfo.deviceUniqueIdentifier,
+            //DeviceId = "8",
+            DeviceId = SystemInfo.deviceUniqueIdentifier,
             code = code_Inputfield.text,
         };
 
