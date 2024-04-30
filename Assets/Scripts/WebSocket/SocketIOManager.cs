@@ -10,7 +10,7 @@ using UnityEngine.Video;
 public class SocketIOManager : MonoBehaviour
 {
     private SocketIOUnity socket;
-    public string serverUrl; // Replace with your server's address
+    public string serverUrl; 
 
     public AVVideoPlayer avVideoPlayer;
     public AVVideoDownloader videoDownloader;
@@ -34,8 +34,6 @@ public class SocketIOManager : MonoBehaviour
             Transport = SocketIOClient.Transport.TransportProtocol.WebSocket
         });
 
-        // Set the serializer (if needed, for example if you're using IL2CPP and need to use Newtonsoft)
-        // socket.JsonSerializer = new NewtonsoftJsonSerializer();
         socket.OnConnected += (sender, e) => {
             Debug.Log("Successfully connected to the server.");
         };
@@ -108,19 +106,7 @@ public class SocketIOManager : MonoBehaviour
              bool restart = jsonObject["restart"].AsBool;
              videoId = jsonObject["video_id"].Value;
              packageId = jsonObject["package_id"].Value;
-            Debug.Log("idd : "+videoId);
 
-            //if (videoId == apiManager.id1)
-            //{
-            //    isVideo1 = true;
-            //    isVideo2 = false;
-            //}
-            //if (videoId == apiManager.id2)
-            //{
-            //    isVideo1 = false;
-            //    isVideo2 = true;
-            //}
-            //Debug.Log("Received commandTracker event - Play: " + play + ", Restart: " + restart + ", Video ID: " + videoId + ", Package ID: " + packageId);
             if (play && !restart)
             {
                 Debug.Log("played");
@@ -143,7 +129,6 @@ public class SocketIOManager : MonoBehaviour
     }
     void OnDestroy()
     {
-        // Properly disconnect the client when the object is destroyed
         socket.Disconnect();
     }
 

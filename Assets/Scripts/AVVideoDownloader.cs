@@ -38,21 +38,41 @@ public class AVVideoDownloader : MonoBehaviour
                 continue;
             }
             savePath1 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[0]);
-            savePath2 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[1]);
-            //string savePath = Path.Combine(Application.persistentDataPath, videoName);
-
-            // Check if the video file already exists locally
-            if (PlayerPrefs.GetInt(videoName, 0) == 1 && File.Exists(savePath1) && File.Exists(savePath2))
+            if (apiManager.videoCount == 2)
             {
+                savePath2 = Path.Combine(Application.persistentDataPath, apiManager.GetVideoName[1]);
+            }
 
-                    Debug.Log("Video is fully downloaded: " + videoName); 
+            if (apiManager.videoCount == 1)
+            {
+                if (PlayerPrefs.GetInt(videoName, 0) == 1 && File.Exists(savePath1))
+                {
+
+                    Debug.Log("Video is fully downloaded: " + videoName);
                     UpdateVideoStatus(i);
+                }
+                else
+                {
+                    // If the video doesn't exist locally, start downloading
+                    StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], videoName, i));
+                }
             }
-            else
+            if (apiManager.videoCount == 2)
             {
-                // If the video doesn't exist locally, start downloading
-                StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], videoName, i));
+                if (PlayerPrefs.GetInt(videoName, 0) == 1 && File.Exists(savePath1) && File.Exists(savePath2))
+                {
+
+                    Debug.Log("Video is fully downloaded: " + videoName);
+                    UpdateVideoStatus(i);
+                }
+                else
+                {
+                    // If the video doesn't exist locally, start downloading
+                    StartCoroutine(DownloadVideoCoroutine(apiManager.GetVideoURL[i], videoName, i));
+                }
             }
+            // Check if the video file already exists locally
+
         }
 
         // Check if both videos are downloaded
@@ -78,7 +98,7 @@ public class AVVideoDownloader : MonoBehaviour
                     if (progressSlider != null)
                     {
                         // Scale www.downloadProgress from 0-1 to 0-100
-                        int scaledProgress = (int)(www.downloadProgress * 100 /2 + video2);
+                        int scaledProgress = (int)(www.downloadProgress * 100);
 
                         // Assign the scaled progress value to progressSlider
                         progressSlider.value = scaledProgress;
@@ -119,10 +139,15 @@ public class AVVideoDownloader : MonoBehaviour
         }
 
         // Check if both videos are downloaded
-        if (video1Downloaded && video2Downloaded)
+        if (video1Downloaded && video2Downloaded && apiManager.videoCount==2)
         {
 
             // If both videos are downloaded, activate the welcome panel and socket
+            dataHandler.WelcomePanelActive();
+            socket.SetActive(true);
+        }
+        if (video1Downloaded && apiManager.videoCount == 1)
+        {
             dataHandler.WelcomePanelActive();
             socket.SetActive(true);
         }

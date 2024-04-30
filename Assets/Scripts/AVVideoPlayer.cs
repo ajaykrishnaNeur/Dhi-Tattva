@@ -44,70 +44,16 @@ public class AVVideoPlayer : MonoBehaviour
 
     private void Update()
     {
-        if (socketIOManager != null && socketIOManager.isVideo1 == true)
+        if(apiManager.videoCount == 2)
         {
-            
-            videoDuration = mediaPlayer.Info.GetDuration() / 60;
-            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
-            if (currentTime == 0)
-            {
-                isVideo1CountExit = true;
-            }
-            if (videoDuration != 0 && currentTime >= videoDuration && isVideo1CountExit)
-            {
-                isvideo1Count = true;
-                VideoCountAdd videoCountAdd = new VideoCountAdd()
-                {
-                    //videoId = "662b925da7cc1803b45f08a2",
-                    //adminId = "662f6104cb488c1bf137a4c6",
-                    videoId = apiManager.id1,
-                    adminId = apiManager.adminId,
-                    count = "1"
-                    
-                };
-              
-                string jsonData = JsonConvert.SerializeObject(videoCountAdd);
-                apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
-                isVideo1CountExit = false;
-            }
-
+            Video2Package();
         }
-       else  if (socketIOManager != null && socketIOManager.isVideo2 == true )
+        if (apiManager.videoCount == 1)
         {
-            videoDuration = mediaPlayer.Info.GetDuration() / 60;
-            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
-            if (currentTime == 0)
-            {
-                isVideo2CountExit = true;
-            }
-            if (videoDuration != 0 && currentTime >= videoDuration && isVideo2CountExit)
-            {
-                isVideo2Count = true;
-                VideoCountAdd videoCountAdd = new VideoCountAdd()
-                {
-                    //videoId = "662b925da7cc1803b45f08a2",
-                    //adminId = "662f6104cb488c1bf137a4c6",
-                    videoId = apiManager.id2,
-                    adminId = apiManager.adminId,
-                    count = "1"
-
-                };
-
-                string jsonData = JsonConvert.SerializeObject(videoCountAdd);
-                apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
-                isVideo2CountExit = false;
-            }
-
-        }
-
-
-        if (isvideo1Count && isVideo2Count)
-        {
-            PackageCount();
-            isvideo1Count = false;
-            isVideo2Count = false;
+            Video1Package();
         }
     }
+
 
     public void PlayVideo()
     {
@@ -168,22 +114,6 @@ public class AVVideoPlayer : MonoBehaviour
         dataHandler.WelcomePanelDisable();
     }
 
-    public void VideoCount()
-    {
-        VideoCountAdd videoCountAdd = new VideoCountAdd()
-        {
-            //videoId = "662b925da7cc1803b45f08a2",
-            //adminId = "662f6104cb488c1bf137a4c6",
-            videoId = apiManager.id1,
-            adminId = "662f6104cb488c1bf137a4c6",
-            count = "1"
-
-        };
-
-        string jsonData = JsonConvert.SerializeObject(videoCountAdd);
-        apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
-    }
-
     public void PackageCount()
     {
         PackageCountAdd packageCountAdd = new PackageCountAdd()
@@ -198,5 +128,103 @@ public class AVVideoPlayer : MonoBehaviour
         apiManager.StartCoroutine(apiManager.PackageCountPostRequest("http://43.204.38.188:8000/v1/package-counts", jsonData));
     }
 
+    public void Video2Package()
+    {
+        if (socketIOManager != null && socketIOManager.isVideo1 == true)
+        {
+
+            videoDuration = mediaPlayer.Info.GetDuration() / 60;
+            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
+            if (currentTime == 0)
+            {
+                isVideo1CountExit = true;
+            }
+            if (videoDuration != 0 && currentTime >= videoDuration && isVideo1CountExit)
+            {
+                isvideo1Count = true;
+                VideoCountAdd videoCountAdd = new VideoCountAdd()
+                {
+                    videoId = apiManager.id1,
+                    adminId = apiManager.adminId,
+                    count = "1"
+
+                };
+
+                string jsonData = JsonConvert.SerializeObject(videoCountAdd);
+                apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
+                isVideo1CountExit = false;
+            }
+
+        }
+        else if (socketIOManager != null && socketIOManager.isVideo2 == true)
+        {
+            videoDuration = mediaPlayer.Info.GetDuration() / 60;
+            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
+            if (currentTime == 0)
+            {
+                isVideo2CountExit = true;
+            }
+            if (videoDuration != 0 && currentTime >= videoDuration && isVideo2CountExit)
+            {
+                isVideo2Count = true;
+                VideoCountAdd videoCountAdd = new VideoCountAdd()
+                {
+                    videoId = apiManager.id2,
+                    adminId = apiManager.adminId,
+                    count = "1"
+
+                };
+
+                string jsonData = JsonConvert.SerializeObject(videoCountAdd);
+                apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
+                isVideo2CountExit = false;
+            }
+
+        }
+
+
+        if (isvideo1Count && isVideo2Count)
+        {
+            PackageCount();
+            isvideo1Count = false;
+            isVideo2Count = false;
+        }
+    }
+
+    public void Video1Package()
+    {
+        if (socketIOManager != null && socketIOManager.isVideo1 == true)
+        {
+
+            videoDuration = mediaPlayer.Info.GetDuration() / 60;
+            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
+            if (currentTime == 0)
+            {
+                isVideo1CountExit = true;
+            }
+            if (videoDuration != 0 && currentTime >= videoDuration && isVideo1CountExit)
+            {
+                isvideo1Count = true;
+                VideoCountAdd videoCountAdd = new VideoCountAdd()
+                {
+                    videoId = apiManager.id1,
+                    adminId = apiManager.adminId,
+                    count = "1"
+
+                };
+
+                string jsonData = JsonConvert.SerializeObject(videoCountAdd);
+                apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
+                isVideo1CountExit = false;
+            }
+
+        }
+
+        if (isvideo1Count)
+        {
+            PackageCount();
+            isvideo1Count = false;
+        }
+    }
 }
 
