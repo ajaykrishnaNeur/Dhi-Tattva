@@ -11,6 +11,7 @@ public class DataHandler : MonoBehaviour
     public GameObject verificationPanel;
     public GameObject AdminPanel;
     public GameObject incorrectCodeText;
+    public TextMeshProUGUI apiMessage;
     public GameObject Ground;
     public TMP_InputField code_Inputfield;
     private APIManager apiManager;
@@ -54,6 +55,7 @@ public class DataHandler : MonoBehaviour
     public void WrongCredentialPanelActive()
     {
         incorrectCodeText.SetActive(true);
+        
     }
 
     

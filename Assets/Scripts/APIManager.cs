@@ -1,5 +1,6 @@
 using Newtonsoft.Json.Linq;
 using Oculus.Platform;
+using SocketIOClient.Messages;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -124,7 +125,11 @@ public class APIManager : MonoBehaviour
 
             Debug.Log("return" + req.downloadHandler.text);
             string value = req.downloadHandler.text;
-            
+
+            JObject json = JObject.Parse(value);
+            string message = (string)json["message"];
+            dataHandler.WrongCredentialPanelActive();
+            dataHandler.apiMessage.text = message;
         }
         if (req.downloadHandler.text.Contains("Enter valid device register code"))
         {
