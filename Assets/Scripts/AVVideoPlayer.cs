@@ -20,6 +20,7 @@ public class AVVideoPlayer : MonoBehaviour
     private double videoDuration;
     private bool isVideoEnded;
     private bool isvideo1Count, isVideo2Count;
+    private bool isVideo1CountExit, isVideo2CountExit;
     public class VideoCountAdd
     {
         public string videoId;
@@ -35,6 +36,8 @@ public class AVVideoPlayer : MonoBehaviour
     }
     private void Start()
     {
+        isVideo1CountExit = true;
+        isVideo2CountExit = true;
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
     }
@@ -43,9 +46,14 @@ public class AVVideoPlayer : MonoBehaviour
     {
         if (socketIOManager != null && socketIOManager.isVideo1 == true)
         {
+            
             videoDuration = mediaPlayer.Info.GetDuration() / 60;
             double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
-            if (videoDuration != 0 && currentTime >= videoDuration)
+            if (currentTime == 0)
+            {
+                isVideo1CountExit = true;
+            }
+            if (videoDuration != 0 && currentTime >= videoDuration && isVideo1CountExit)
             {
                 isvideo1Count = true;
                 VideoCountAdd videoCountAdd = new VideoCountAdd()
@@ -60,6 +68,7 @@ public class AVVideoPlayer : MonoBehaviour
               
                 string jsonData = JsonConvert.SerializeObject(videoCountAdd);
                 apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
+                isVideo1CountExit = false;
             }
 
         }
@@ -67,7 +76,11 @@ public class AVVideoPlayer : MonoBehaviour
         {
             videoDuration = mediaPlayer.Info.GetDuration() / 60;
             double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
-            if (videoDuration != 0 && currentTime >= videoDuration)
+            if (currentTime == 0)
+            {
+                isVideo2CountExit = true;
+            }
+            if (videoDuration != 0 && currentTime >= videoDuration && isVideo2CountExit)
             {
                 isVideo2Count = true;
                 VideoCountAdd videoCountAdd = new VideoCountAdd()
@@ -82,6 +95,7 @@ public class AVVideoPlayer : MonoBehaviour
 
                 string jsonData = JsonConvert.SerializeObject(videoCountAdd);
                 apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
+                isVideo2CountExit = false;
             }
 
         }
