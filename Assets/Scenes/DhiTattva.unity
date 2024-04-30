@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 4e6d246f1ad40554e86c6caadd6f5d94, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5342,6 +5342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeApi: http://43.204.38.188:8000/v1/packages/active_package
   videoCount: 0
+  adminId: 
   VideoDownload: {fileID: 176214742}
   GetVideoURL:
   - 
@@ -6116,7 +6117,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1526379633
 MonoBehaviour:
   m_ObjectHideFlags: 0
