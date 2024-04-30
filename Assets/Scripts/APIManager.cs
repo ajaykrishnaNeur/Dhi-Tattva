@@ -15,7 +15,8 @@ public class APIManager : MonoBehaviour
 
     [SerializeField]
     public int videoCount;
-
+    [SerializeField]
+    public string adminId;
     public GameObject VideoDownload;
     public string[] GetVideoURL = new string[10], GetVideoName = new string[10];
     [SerializeField]
@@ -64,6 +65,7 @@ public class APIManager : MonoBehaviour
             testcube.SetActive(false);
             string jsonResponse = request.downloadHandler.text;
             JObject jsonObject = JObject.Parse(jsonResponse);
+            adminId = (string)jsonObject["adminId"];
             packageId = (string)jsonObject["activePackage"]["id"]; 
             // Get the 'videos' array from the JSON
             JArray videosArray = (JArray)jsonObject["activePackage"]["videos"];

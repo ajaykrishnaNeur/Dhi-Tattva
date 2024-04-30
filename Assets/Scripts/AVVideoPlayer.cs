@@ -12,9 +12,14 @@ public class AVVideoPlayer : MonoBehaviour
     public MediaPlayer mediaPlayer;
     private APIManager apiManager;
     private DataHandler dataHandler;
+    public SocketIOManager socketIOManager;
 
     public string videoPath;
     public GameObject sphere;
+
+    private double videoDuration;
+    private bool isVideoEnded;
+    private bool isvideo1Count, isVideo2Count;
     public class VideoCountAdd
     {
         public string videoId;
@@ -34,6 +39,62 @@ public class AVVideoPlayer : MonoBehaviour
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
     }
 
+    private void Update()
+    {
+        if (socketIOManager != null && socketIOManager.isVideo1 == true)
+        {
+            videoDuration = mediaPlayer.Info.GetDuration() / 60;
+            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
+            if (videoDuration != 0 && currentTime >= videoDuration)
+            {
+                isvideo1Count = true;
+                VideoCountAdd videoCountAdd = new VideoCountAdd()
+                {
+                    //videoId = "662b925da7cc1803b45f08a2",
+                    //adminId = "662f6104cb488c1bf137a4c6",
+                    videoId = apiManager.id1,
+                    adminId = apiManager.adminId,
+                    count = "1"
+                    
+                };
+              
+                string jsonData = JsonConvert.SerializeObject(videoCountAdd);
+                apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
+            }
+
+        }
+       else  if (socketIOManager != null && socketIOManager.isVideo2 == true )
+        {
+            videoDuration = mediaPlayer.Info.GetDuration() / 60;
+            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
+            if (videoDuration != 0 && currentTime >= videoDuration)
+            {
+                isVideo2Count = true;
+                VideoCountAdd videoCountAdd = new VideoCountAdd()
+                {
+                    //videoId = "662b925da7cc1803b45f08a2",
+                    //adminId = "662f6104cb488c1bf137a4c6",
+                    videoId = apiManager.id2,
+                    adminId = apiManager.adminId,
+                    count = "1"
+
+                };
+
+                string jsonData = JsonConvert.SerializeObject(videoCountAdd);
+                apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
+            }
+
+        }
+
+
+        if (isvideo1Count && isVideo2Count)
+        {
+            PackageCount();
+            isvideo1Count = false;
+            isVideo2Count = false;
+        }
+    }
+
     public void PlayVideo()
     {
        
@@ -46,9 +107,21 @@ public class AVVideoPlayer : MonoBehaviour
         string fullPath = Path.Combine(Application.persistentDataPath, videoPath);
         bool isOpening = mediaPlayer.OpenMedia(new MediaPath(fullPath, MediaPathType.AbsolutePathOrURL));
 
-        double videoDuration = mediaPlayer.Info.GetDuration();
-        double endTime = videoDuration;
-        Debug.LogError("duration:" + endTime);
+        if (socketIOManager.isVideo1 == true)
+        {
+            double currentTime = mediaPlayer.Control.GetCurrentTime() /60;
+            double videoDuration = mediaPlayer.Info.GetDuration()/60;
+            double endTime = videoDuration;
+            Debug.LogError("duration1:" + endTime);
+        }
+        else if(socketIOManager.isVideo2 == true)
+        {
+            double videoDuration = mediaPlayer.Info.GetDuration();
+            double endTime = videoDuration;
+            Debug.LogError("duration2:" + endTime);
+        }
+
+
 
         if (!isOpening)
         {
@@ -85,7 +158,9 @@ public class AVVideoPlayer : MonoBehaviour
     {
         VideoCountAdd videoCountAdd = new VideoCountAdd()
         {
-            videoId = "662b925da7cc1803b45f08a2",
+            //videoId = "662b925da7cc1803b45f08a2",
+            //adminId = "662f6104cb488c1bf137a4c6",
+            videoId = apiManager.id1,
             adminId = "662f6104cb488c1bf137a4c6",
             count = "1"
 
@@ -99,8 +174,8 @@ public class AVVideoPlayer : MonoBehaviour
     {
         PackageCountAdd packageCountAdd = new PackageCountAdd()
         {
-            packageId = "662b92f3a7cc1803b45f08bc",
-            adminId = "662f6104cb488c1bf137a4c6",
+            packageId = apiManager.packageId,
+            adminId = apiManager.adminId,
             count = "1"
 
         };

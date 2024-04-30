@@ -5085,6 +5085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediaPlayer: {fileID: 1258629147}
+  socketIOManager: {fileID: 1583215850}
   videoPath: 
   sphere: {fileID: 1347820437}
 --- !u!114 &1258629147
