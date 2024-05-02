@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: Dhi-Tattva_V0.0.2
+  productName: Dhi-Tattva_V1.0.0
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -136,7 +136,7 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
-  bundleVersion: 0.0.2
+  bundleVersion: 1.0.0
   preloadedAssets:
   - {fileID: 11400000, guid: 0581526279b0d1e468c2f568b7aa6cb8, type: 2}
   - {fileID: 5225066649516117560, guid: 67bfc2ded81e247439add0dfef85ee5f, type: 2}
