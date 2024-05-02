@@ -713,8 +713,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00012207, y: 364.1}
-  m_SizeDelta: {x: 1920, y: 95.5}
+  m_AnchoredPosition: {x: -0.00012207, y: 320.3}
+  m_SizeDelta: {x: 1920, y: 343.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &109924199
 MonoBehaviour:
@@ -736,7 +736,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Welcome VR!
+  m_text: Welcome user!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -763,8 +763,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 65
-  m_fontSizeBase: 65
+  m_fontSize: 73.37
+  m_fontSizeBase: 73.37
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2628,7 +2628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &627699610
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5341,9 +5341,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeApi: http://43.204.38.188:8000/v1/packages/active_package
+  VideoDownload: {fileID: 176214742}
   videoCount: 0
   adminId: 
-  VideoDownload: {fileID: 176214742}
   GetVideoURL:
   - 
   - 
@@ -5361,7 +5361,6 @@ MonoBehaviour:
   title2: 
   urlvideo2: 
   packageId: 
-  testcube: {fileID: 238904046}
 --- !u!1001 &1331242747
 PrefabInstance:
   m_ObjectHideFlags: 0
