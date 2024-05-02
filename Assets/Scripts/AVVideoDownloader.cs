@@ -19,10 +19,8 @@ public class AVVideoDownloader : MonoBehaviour
     public string savePath1, savePath2;
     private bool video1Downloaded = false;
     private bool video2Downloaded = false;
-    public int video2;
     private void Start()
     {
-        video2 = 0;
         Debug.Log(SystemInfo.deviceUniqueIdentifier);
         apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
         dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
@@ -135,7 +133,6 @@ public class AVVideoDownloader : MonoBehaviour
         else if (videoIndex == 1)
         {
             video2Downloaded = true;
-            //video2 = 50;
         }
 
         // Check if both videos are downloaded
