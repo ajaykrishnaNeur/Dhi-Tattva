@@ -9,6 +9,7 @@ using System.Net.Sockets;
 
 public class AVVideoDownloader : MonoBehaviour
 {
+    [HideInInspector]
     public TextMeshProUGUI[] pathTexts = new TextMeshProUGUI[10];
     public Slider progressSlider;
     public TextMeshProUGUI slidervalue;
@@ -16,6 +17,7 @@ public class AVVideoDownloader : MonoBehaviour
     public APIManager apiManager;
     public DataHandler dataHandler;
     public GameObject socket;
+    [HideInInspector]
     public string savePath1, savePath2;
     private bool video1Downloaded = false;
     private bool video2Downloaded = false;

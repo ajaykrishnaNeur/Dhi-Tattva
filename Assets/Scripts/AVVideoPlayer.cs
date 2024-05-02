@@ -13,7 +13,7 @@ public class AVVideoPlayer : MonoBehaviour
     private APIManager apiManager;
     private DataHandler dataHandler;
     public SocketIOManager socketIOManager;
-
+    [HideInInspector]
     public string videoPath;
     public GameObject sphere;
 

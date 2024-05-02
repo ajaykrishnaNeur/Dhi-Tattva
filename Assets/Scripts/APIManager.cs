@@ -10,23 +10,24 @@ using UnityEngine.Networking;
 
 public class APIManager : MonoBehaviour
 {
-    private DataHandler dataHandler;
+
     public string activeApi;
+    public GameObject VideoDownload;
     private string deviceId;
 
-    [SerializeField]
+    private DataHandler dataHandler;
+    [HideInInspector]
     public int videoCount;
-    [SerializeField]
+    [HideInInspector]
     public string adminId;
-    public GameObject VideoDownload;
+    [HideInInspector]
     public string[] GetVideoURL = new string[10], GetVideoName = new string[10];
-    [SerializeField]
+    [HideInInspector]
     public string id1, thumbnail1,description1,title1,urlvideo1;
-    [SerializeField]
+    [HideInInspector]
     public string id2, thumbnail2, description2, title2, urlvideo2;
-    [SerializeField]
+    [HideInInspector]
     public string packageId;
-    public GameObject testcube;
     private string message;
     void Start()
     {
@@ -65,7 +66,6 @@ public class APIManager : MonoBehaviour
         else
         {
             Debug.Log("Request successful!");
-            testcube.SetActive(false);
             string jsonResponse = request.downloadHandler.text;
             JObject jsonObject = JObject.Parse(jsonResponse);
             adminId = (string)jsonObject["adminId"];
