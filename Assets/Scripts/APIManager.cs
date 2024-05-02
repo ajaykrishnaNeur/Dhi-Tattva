@@ -27,6 +27,7 @@ public class APIManager : MonoBehaviour
     [SerializeField]
     public string packageId;
     public GameObject testcube;
+    private string message;
     void Start()
     {
         //deviceId = "8";
@@ -51,6 +52,7 @@ public class APIManager : MonoBehaviour
             if (request.downloadHandler.text.Contains("No active packages found."))
             {
                 dataHandler.LoginPanelActive();
+                dataHandler.apiMessage.text = "No active packages found.";
             }
             else
             {
@@ -127,23 +129,22 @@ public class APIManager : MonoBehaviour
             string value = req.downloadHandler.text;
 
             JObject json = JObject.Parse(value);
-            string message = (string)json["message"];
-            dataHandler.WrongCredentialPanelActive();
-            dataHandler.apiMessage.text = message;
+            message = (string)json["message"];
+
         }
-        if (req.downloadHandler.text.Contains("Enter valid device register code"))
+       
+
+        if (req.downloadHandler.text.Contains("Device already paired") || req.downloadHandler.text.Contains(SystemInfo.deviceUniqueIdentifier))
+        {
+            StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
+            dataHandler.WrongCredentialPanelActive();
+            dataHandler.apiMessage.text = "";
+        }
+        else 
         {
             //INCORRECT CODE    
             dataHandler.WrongCredentialPanelActive();
-        }
-
-        if (req.downloadHandler.text.Contains("Device already paired"))
-        {
-            StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
-        }
-        if (req.downloadHandler.text.Contains(SystemInfo.deviceUniqueIdentifier))
-        {
-            StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
+            dataHandler.apiMessage.text = message;          
         }
     }
 
