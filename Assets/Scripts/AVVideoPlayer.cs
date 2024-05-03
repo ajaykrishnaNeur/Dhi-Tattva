@@ -196,13 +196,14 @@ public class AVVideoPlayer : MonoBehaviour
         if (socketIOManager != null && socketIOManager.isVideo1 == true)
         {
 
-            videoDuration = mediaPlayer.Info.GetDuration() / 60;
-            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
-            if (currentTime == 0)
+            videoDuration = mediaPlayer.Info.GetDuration() ;
+            double currentTime = mediaPlayer.Control.GetCurrentTime();
+            //Debug.Log("currenttime:" + currentTime);
+            if (currentTime == 0|| currentTime == 1|| currentTime ==2)
             {
                 isVideo1CountExit = true;
             }
-            if (videoDuration != 0 && currentTime >= videoDuration && isVideo1CountExit)
+            if (videoDuration != 0 && currentTime >= videoDuration-0.6 && isVideo1CountExit)
             {
                 isvideo1Count = true;
                 VideoCountAdd videoCountAdd = new VideoCountAdd()
