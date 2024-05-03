@@ -133,13 +133,10 @@ public class AVVideoPlayer : MonoBehaviour
         if (socketIOManager != null && socketIOManager.isVideo1 == true)
         {
 
-            videoDuration = mediaPlayer.Info.GetDuration() / 60;
-            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
-            if (currentTime == 0)
-            {
-                isVideo1CountExit = true;
-            }
-            if (videoDuration != 0 && currentTime >= videoDuration && isVideo1CountExit)
+            videoDuration = mediaPlayer.Info.GetDuration();
+            double currentTime = mediaPlayer.Control.GetCurrentTime();
+
+            if (videoDuration != 0 && currentTime >= videoDuration-0.6)
             {
                 isvideo1Count = true;
                 VideoCountAdd videoCountAdd = new VideoCountAdd()
@@ -149,7 +146,8 @@ public class AVVideoPlayer : MonoBehaviour
                     count = "1"
 
                 };
-
+                mediaPlayer.Control.Seek(0f);
+                mediaPlayer.Play();
                 string jsonData = JsonConvert.SerializeObject(videoCountAdd);
                 apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
                 isVideo1CountExit = false;
@@ -158,13 +156,10 @@ public class AVVideoPlayer : MonoBehaviour
         }
         else if (socketIOManager != null && socketIOManager.isVideo2 == true)
         {
-            videoDuration = mediaPlayer.Info.GetDuration() / 60;
-            double currentTime = mediaPlayer.Control.GetCurrentTime() / 60;
-            if (currentTime == 0)
-            {
-                isVideo2CountExit = true;
-            }
-            if (videoDuration != 0 && currentTime >= videoDuration && isVideo2CountExit)
+            videoDuration = mediaPlayer.Info.GetDuration() ;
+            double currentTime = mediaPlayer.Control.GetCurrentTime();
+
+            if (videoDuration != 0 && currentTime >= videoDuration-0.6)
             {
                 isVideo2Count = true;
                 VideoCountAdd videoCountAdd = new VideoCountAdd()
@@ -174,7 +169,8 @@ public class AVVideoPlayer : MonoBehaviour
                     count = "1"
 
                 };
-
+                mediaPlayer.Control.Seek(0f);
+                mediaPlayer.Play();
                 string jsonData = JsonConvert.SerializeObject(videoCountAdd);
                 apiManager.StartCoroutine(apiManager.VideoCountPostRequest("http://43.204.38.188:8000/v1/video-counts", jsonData));
                 isVideo2CountExit = false;
@@ -199,10 +195,10 @@ public class AVVideoPlayer : MonoBehaviour
             videoDuration = mediaPlayer.Info.GetDuration() ;
             double currentTime = mediaPlayer.Control.GetCurrentTime();
             //Debug.Log("currenttime:" + currentTime);
-            if (currentTime == 0|| currentTime == 1|| currentTime ==2)
-            {
-                isVideo1CountExit = true;
-            }
+            //if (currentTime == 0|| currentTime == 1|| currentTime ==2)
+            //{
+            //    isVideo1CountExit = true;
+            //}
             if (videoDuration != 0 && currentTime >= videoDuration-0.6)
             {
                 isvideo1Count = true;
