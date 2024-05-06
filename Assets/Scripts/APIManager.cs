@@ -1,5 +1,6 @@
 using Newtonsoft.Json.Linq;
 using Oculus.Platform;
+using SimpleJSON;
 using SocketIOClient.Messages;
 using System;
 using System.Collections;
@@ -15,7 +16,7 @@ public class APIManager : MonoBehaviour
     public GameObject VideoDownload;
     private string deviceId;
 
-    private DataHandler dataHandler;
+    public  DataHandler dataHandler;
     [HideInInspector]
     public int videoCount;
     [HideInInspector]
@@ -33,43 +34,44 @@ public class APIManager : MonoBehaviour
     {
         //deviceId = "8";
         deviceId = SystemInfo.deviceUniqueIdentifier;
-        dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
+     //   dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
     }
 
     public IEnumerator DeviceIdPostRequest(string url, string headername)
     {
-        UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm());
+        var req = new UnityWebRequest(url, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(headername);
+        req.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
 
-        // Add custom header to the request
-        request.SetRequestHeader("device-id", headername); 
-
-        // Send the request
-        yield return request.SendWebRequest();
-
-        // Check for errors
-        if (request.result != UnityWebRequest.Result.Success)
+        req.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        req.SetRequestHeader("Content-Type", "application/json");
+        req.SetRequestHeader("device-id", headername);
+        //  req.certificateHandler = new BypassCertificateHandler();
+        //Send the request then wait here until it returns
+        yield return req.SendWebRequest();
+        if (req.isNetworkError) // error in request
         {
-            if (request.downloadHandler.text.Contains("No active packages found."))
+            Debug.Log("Error While Sending: " + req.error);
+
+            if (req.downloadHandler.text.Contains("No active packages found."))
             {
                 dataHandler.LoginPanelActive();
                 dataHandler.apiMessage.text = "No active packages found.";
             }
             else
             {
-                Debug.LogError("Error posting request: " + request.error);
+                Debug.LogError("Error posting request: " + req.error);
                 dataHandler.LoginPanelActive();
             }
-
         }
-
-        else
+        else // done
         {
             Debug.Log("Request successful!");
-            string jsonResponse = request.downloadHandler.text;
+            string jsonResponse = req.downloadHandler.text;
             JObject jsonObject = JObject.Parse(jsonResponse);
             adminId = (string)jsonObject["adminId"];
-            packageId = (string)jsonObject["activePackage"]["id"]; 
+            packageId = (string)jsonObject["activePackage"]["id"];
             // Get the 'videos' array from the JSON
             JArray videosArray = (JArray)jsonObject["activePackage"]["videos"];
             videoCount = videosArray.Count;
@@ -78,33 +80,37 @@ public class APIManager : MonoBehaviour
             {
                 JObject video = (JObject)videosArray[i];
 
-                if(i == 0)
+                if (i == 0)
                 {
-                     urlvideo1 = (string)video["url"];
-                     GetVideoURL[0] = urlvideo1;
-                     title1 = (string)video["title"];                    
-                     description1 = (string)video["description"];
-                     thumbnail1 = (string)video["thumbnail"];
-                     id1 = (string)video["id"];
-                     GetVideoName[0] = id1;
+                    urlvideo1 = (string)video["url"];
+                    GetVideoURL[0] = urlvideo1;
+                    title1 = (string)video["title"];
+                    description1 = (string)video["description"];
+                    thumbnail1 = (string)video["thumbnail"];
+                    id1 = (string)video["id"];
+                    GetVideoName[0] = id1;
                 }
                 if (i == 1)
                 {
-                     urlvideo2 = (string)video["url"];
-                     GetVideoURL[1] = urlvideo2;
-                     title2 = (string)video["title"];
-                     description2 = (string)video["description"];
-                     thumbnail2 = (string)video["thumbnail"];
-                     id2 = (string)video["id"];
-                     GetVideoName[1] = id2;
+                    urlvideo2 = (string)video["url"];
+                    GetVideoURL[1] = urlvideo2;
+                    title2 = (string)video["title"];
+                    description2 = (string)video["description"];
+                    thumbnail2 = (string)video["thumbnail"];
+                    id2 = (string)video["id"];
+                    GetVideoName[1] = id2;
                 }
-                
+
             }
             dataHandler.VerifiedPanelActive();
             VideoDownload.SetActive(true);
             Debug.Log("return-1" + jsonResponse);
 
         }
+     
+       
+
+      
     }
 
     public IEnumerator LoginPostRequest(string url, string jsonData)

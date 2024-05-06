@@ -14,7 +14,7 @@ public class DataHandler : MonoBehaviour
     public TextMeshProUGUI apiMessage;
     public GameObject Ground;
     public TMP_InputField code_Inputfield;
-    private APIManager apiManager;
+    public  APIManager apiManager;
 
     public class LoginCode
     {
@@ -24,7 +24,7 @@ public class DataHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
+      //  apiManager = GameObject.Find("Api Manager").GetComponent<APIManager>();
     }
 
     public void LoginPanelActive()
