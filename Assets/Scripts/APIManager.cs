@@ -30,16 +30,21 @@ public class APIManager : MonoBehaviour
     [HideInInspector]
     public string packageId;
     private string message;
+    private void Awake()
+    {
+        deviceId = SystemInfo.deviceUniqueIdentifier;
+    }
     void Start()
     {
         //deviceId = "8";
-        deviceId = SystemInfo.deviceUniqueIdentifier;
+       
      //   dataHandler = GameObject.Find("Data Handler").GetComponent<DataHandler>();
         StartCoroutine(DeviceIdPostRequest(activeApi, deviceId));
     }
 
     public IEnumerator DeviceIdPostRequest(string url, string headername)
     {
+        yield return new WaitForSeconds(2f);
         var req = new UnityWebRequest(url, "POST");
         byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(headername);
         req.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
