@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.49448004, g: 0.5586615, b: 0.66755235, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -679,6 +679,7 @@ MonoBehaviour:
   apiMessage: {fileID: 264107205}
   Ground: {fileID: 447612570283675227}
   code_Inputfield: {fileID: 503445662568288582}
+  apiManager: {fileID: 1272782185}
 --- !u!1 &109924197
 GameObject:
   m_ObjectHideFlags: 0
@@ -5342,6 +5343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeApi: http://43.204.38.188:8000/v1/packages/active_package
   VideoDownload: {fileID: 176214742}
+  dataHandler: {fileID: 106046041}
   videoCount: 0
   adminId: 
   GetVideoURL:
